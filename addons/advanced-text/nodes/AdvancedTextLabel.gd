@@ -30,11 +30,13 @@ signal custom_link(url:String)
 		parser = value
 		update_configuration_warnings()
 		if parser:
-			parser.changed.connect(_parse_text)
+			if not parser.changed.is_connected(_parse_text):
+				parser.changed.connect(_parse_text)
 
 			if parser is ExtendedBBCodeParser:
 				for h in parser.headers:
-					h.changed.connect(_parse_text)
+					if not h.changed.is_connected(_parse_text):
+						h.changed.connect(_parse_text)
 
 			_parse_text()
 			print("parse text")
