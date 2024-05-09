@@ -11,7 +11,7 @@ func _on_ask(character:Dictionary, question:String, default_answer:String):
 	line_edit.placeholder_text = default_answer
 
 func _process(_delta):
-	if Rakugo.is_waiting_ask_return():
+	if not Rakugo.is_waiting_ask_return():
 		hide()
 		return
 
