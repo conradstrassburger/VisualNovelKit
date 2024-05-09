@@ -4,7 +4,8 @@ extends DialoguePanel
 ## if true then it will be shown on `menu` staments
 @export var keep_on_menu := true
 
-@export var next_button : Button
+# @export var next_button : Button
+@export var next_button : AdvancedTextButton
 
 func _ready():
 	super._ready()
