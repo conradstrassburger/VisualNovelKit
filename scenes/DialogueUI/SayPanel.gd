@@ -3,6 +3,8 @@ extends DialoguePanel
 ## if true then it will be shown on `menu` staments
 @export var keep_on_menu := true
 
+@export var next_button : Button
+
 func _ready():
 	super._ready()
 	Rakugo.sg_say.connect(set_labels)
@@ -38,3 +40,6 @@ func _on_menu(_choices:Array):
 	next_button.hide()
 	show()
 
+func _on_next_btn_pressed():
+	Rakugo.do_step()
+	hide()
