@@ -10,7 +10,7 @@ config_version=5
 
 [addons]
 
-rakugo/game_version="2.0"
+rakugo/game_version="1.0.0"
 rakugo/history_length=30
 rakugo/narrator/name="narrator"
 rakugo/debug=false
@@ -25,6 +25,7 @@ config/icon="res://icon.svg"
 addons/rakugo_game_template/loading_scene_path="res://scenes/LoadingScreen/LoadingScreen.tscn"
 addons/rakugo_game_template/main_menu_path="res://scenes/MainMenu/MainMenu.tscn"
 addons/rakugo_game_template/first_game_scene_path="res://scenes/Game/game.tscn"
+addons/visual_novel_kit/default_markup_setting="res://addons/visualnovelkit/default_markups/def_markdown.tres"
 
 [autoload]
 
@@ -51,7 +52,7 @@ script/search_in_file_extensions=PackedStringArray("gd", "gdshader", "rk")
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Rakugo/plugin.cfg", "res://addons/advanced-text/plugin.cfg", "res://addons/emojis-for-godot/plugin.cfg", "res://addons/material-design-icons/plugin.cfg", "res://addons/rakugo_game_template/plugin.cfg")
+enabled=PackedStringArray("res://addons/Rakugo/plugin.cfg", "res://addons/advanced-text/plugin.cfg", "res://addons/emojis-for-godot/plugin.cfg", "res://addons/material-design-icons/plugin.cfg", "res://addons/rakugo_game_template/plugin.cfg", "res://addons/visualnovelkit/plugin.cfg")
 
 [gui]
 
