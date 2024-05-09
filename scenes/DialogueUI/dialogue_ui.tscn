@@ -159,12 +159,11 @@ size_flags_vertical = 3
 script = ExtResource("6_3oawk")
 parent = NodePath("..")
 
-[node name="SayPanel" type="Panel" parent="VBoxContainer" node_paths=PackedStringArray("next_button", "character_name_label", "dialogue_label", "root")]
+[node name="SayPanel" type="Panel" parent="VBoxContainer" node_paths=PackedStringArray("character_name_label", "dialogue_label", "root")]
 self_modulate = Color(1, 1, 1, 0.5)
 custom_minimum_size = Vector2(1280, 180)
 layout_mode = 2
 script = ExtResource("3_7gq5t")
-next_button = NodePath("VBoxContainer/HBoxContainer2/CenterContainer/NextBtn")
 character_name_label = NodePath("VBoxContainer/HBoxContainer/CharacterNameLabel")
 dialogue_label = NodePath("VBoxContainer/HBoxContainer2/DialogueLabel")
 root = NodePath("../..")

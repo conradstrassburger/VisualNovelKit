@@ -46,10 +46,6 @@ window/size/viewport_height=720
 window/size/resizable=false
 window/stretch/mode="canvas_items"
 
-[editor]
-
-script/search_in_file_extensions=PackedStringArray("gd", "gdshader", "rk")
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/Rakugo/plugin.cfg", "res://addons/advanced-text/plugin.cfg", "res://addons/emojis-for-godot/plugin.cfg", "res://addons/material-design-icons/plugin.cfg", "res://addons/rakugo_game_template/plugin.cfg", "res://addons/visualnovelkit/plugin.cfg")

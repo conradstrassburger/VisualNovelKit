@@ -22,17 +22,23 @@ func set_labels(character:Dictionary, text:String):
 		show()
 	
 	var character_name = character.get("name", "")
-	var name_label = "[h1]%s[/h1]" % character_name
 
-	if markup is MarkdownParser:
-		name_label = "# %s\n" % character_name
+	if not character_name:
+		character_name_label._text = ""
+	
+	else:
+		var name_label = "[h1]%s[/h1]" % character_name
 
-	var character_color = character.get("color", null)
+		if markup is MarkdownParser:
+			name_label = "# %s\n" % character_name
+
+		var character_color = character.get("color", null)
+		
+		if character_color:
+			name_label = "[color=%s]%s[/color]" % [character_color, name_label]
+		
+		character_name_label._text = name_label
 	
-	if character_color:
-		name_label = "[color=%s]%s[/color]" % name_label
-	
-	character_name_label._text = name_label
 	dialogue_label._text = text
 
 func _on_visibility_changed():

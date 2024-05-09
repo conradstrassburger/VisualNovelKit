@@ -25,14 +25,14 @@ func _on_menu(choices:Array):
 
 	for id in range(choices.size()):
 		var choice_btn := AdvancedTextButton.new()
+		add_child(choice_btn)
 		choice_btn.fit_content = true
 		choice_btn.scroll_active = false
 		choice_btn.shortcut_keys_enabled = false
 		choice_btn.parser = markup
 		choice_btn._text = choices[id]
 		choice_btn.pressed.connect(_on_choice.bind(id))
-		add_child(choice_btn)
-	
+
 	show()
 
 func _on_choice(id: int):
