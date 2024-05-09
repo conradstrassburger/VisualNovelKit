@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnsu6sfdku23l"]
+[gd_scene load_steps=12 format=3 uid="uid://cnsu6sfdku23l"]
 
 [ext_resource type="Script" path="res://scenes/DialogueUI/AskPopup.gd" id="1_nmu6o"]
 [ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextLabel.gd" id="1_rjnec"]
@@ -6,9 +6,10 @@
 [ext_resource type="Script" path="res://scenes/DialogueUI/SayPanel.gd" id="3_7gq5t"]
 [ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextButton.gd" id="4_d7ojs"]
 [ext_resource type="Script" path="res://scenes/DialogueUI/ProcentContainer.gd" id="4_puvhe"]
+[ext_resource type="Script" path="res://scenes/DialogueUI/MenuBox.gd" id="6_3oawk"]
 [ext_resource type="Script" path="res://addons/visualnovelkit/extra_text_fx/ghost_tfx.gd" id="7_gqpod"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0notv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fajs6"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -29,7 +30,7 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37xa8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cecl8"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -66,7 +67,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="AskPopup" type="Panel" parent="VBoxContainer/CenterContainer" node_paths=PackedStringArray("line_edit", "character_name_label", "dialogue_label", "root")]
-unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.5)
 custom_minimum_size = Vector2(576, 180)
 layout_mode = 2
@@ -120,8 +120,8 @@ layout_mode = 2
 [node name="DefaultAnswerBtn" type="RichTextLabel" parent="VBoxContainer/CenterContainer/AskPopup/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/focus = SubResource("StyleBoxFlat_0notv")
-theme_override_styles/normal = SubResource("StyleBoxFlat_37xa8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_fajs6")
+theme_override_styles/normal = SubResource("StyleBoxFlat_cecl8")
 bbcode_enabled = true
 text = "[center] Default answer [font=res://addons/material-design-icons/fonts/material_design_icons.ttf][/font] [/center]"
 fit_content = true
@@ -134,7 +134,8 @@ parser = ExtResource("3_2rcj6")
 [node name="OkBtn" type="RichTextLabel" parent="VBoxContainer/CenterContainer/AskPopup/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_37xa8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_fajs6")
+theme_override_styles/normal = SubResource("StyleBoxFlat_cecl8")
 bbcode_enabled = true
 text = "[center] Ok [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰄳[/font] [/center]"
 fit_content = true
@@ -145,21 +146,20 @@ _text = "@> Ok [icon:checkbox-marked-circle] <@"
 parser = ExtResource("3_2rcj6")
 
 [node name="MenuScrollContainer" type="ScrollContainer" parent="VBoxContainer/CenterContainer" node_paths=PackedStringArray("root")]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(576, 504)
 layout_mode = 2
 script = ExtResource("4_puvhe")
 root = NodePath("../../..")
 procent_size = Vector2(45, 70)
 
-[node name="MenuBox" type="VBoxContainer" parent="VBoxContainer/CenterContainer/MenuScrollContainer"]
-unique_name_in_owner = true
+[node name="MenuBox" type="VBoxContainer" parent="VBoxContainer/CenterContainer/MenuScrollContainer" node_paths=PackedStringArray("parent")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("6_3oawk")
+parent = NodePath("..")
 
 [node name="SayPanel" type="Panel" parent="VBoxContainer" node_paths=PackedStringArray("next_button", "character_name_label", "dialogue_label", "root")]
-unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.5)
 custom_minimum_size = Vector2(1280, 180)
 layout_mode = 2
@@ -215,8 +215,8 @@ layout_mode = 2
 
 [node name="NextBtn" type="RichTextLabel" parent="VBoxContainer/SayPanel/VBoxContainer/HBoxContainer2/CenterContainer"]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxFlat_0notv")
-theme_override_styles/normal = SubResource("StyleBoxFlat_37xa8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_fajs6")
+theme_override_styles/normal = SubResource("StyleBoxFlat_cecl8")
 bbcode_enabled = true
 text = "[ghost freq=1.0 span=3.0]Next [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰊍[/font][/ghost]"
 fit_content = true
