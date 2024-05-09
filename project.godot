@@ -8,6 +8,14 @@
 
 config_version=5
 
+[addons]
+
+rakugo/game_version="1.0.0"
+rakugo/history_length=30
+rakugo/narrator/name="narrator"
+rakugo/debug=false
+rakugo/save_folder="user://saves"
+
 [application]
 
 config/name="Rakugo Game Template"
@@ -25,6 +33,10 @@ SceneLoader="*res://addons/rakugo_game_template/Autoloads/SceneLoader.gd"
 ProjectMusicController="*res://addons/rakugo_game_template/Autoloads/ProjectMusicController.tscn"
 UISoundManager="*res://addons/rakugo_game_template/Autoloads/UISoundManager/UISoundManager.tscn"
 Transitions="*res://addons/rakugo_game_template/Autoloads/Transitions/transitions.tscn"
+Rakugo="*res://addons/Rakugo/Rakugo.gd"
+AdvancedText="*res://addons/advanced-text/AdvancedText.gd"
+EmojisDB="*res://addons/emojis-for-godot/emojis/emojis.gd"
+MaterialIconsDB="*res://addons/material-design-icons/icons/icons.gd"
 
 [display]
 
@@ -33,9 +45,13 @@ window/size/viewport_height=720
 window/size/resizable=false
 window/stretch/mode="canvas_items"
 
+[editor]
+
+script/search_in_file_extensions=PackedStringArray("gd", "gdshader", "rk")
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/rakugo_game_template/plugin.cfg")
+enabled=PackedStringArray("res://addons/Rakugo/plugin.cfg", "res://addons/advanced-text/plugin.cfg", "res://addons/emojis-for-godot/plugin.cfg", "res://addons/material-design-icons/plugin.cfg", "res://addons/rakugo_game_template/plugin.cfg")
 
 [gui]
 
