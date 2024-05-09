@@ -16,10 +16,10 @@ func _process(_delta):
 		return
 
 	if Input.is_action_just_pressed("interact"):
-		if !line_edit.text:
-			Rakugo.ask_return(line_edit.placeholder_text)
-		else:
+		if line_edit.text:
 			Rakugo.ask_return(line_edit.text)
+		else:
+			Rakugo.ask_return(line_edit.placeholder_text)
 
 		hide()
 
