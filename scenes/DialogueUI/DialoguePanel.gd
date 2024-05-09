@@ -1,4 +1,5 @@
-extends Panel
+@tool
+extends ProcentControl
 class_name DialoguePanel
 
 @export var character_name_label : AdvancedTextLabel
@@ -6,7 +7,9 @@ class_name DialoguePanel
 
 func _ready():
 	visibility_changed.connect(_on_visibility_changed)
-	hide()
+	
+	visible = Engine.is_editor_hint()
+	set_process(false)
 
 func set_labels(character:Dictionary, text:String):
 	if !visible:
