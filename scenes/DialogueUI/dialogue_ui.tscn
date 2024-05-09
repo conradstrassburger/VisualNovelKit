@@ -1,0 +1,175 @@
+[gd_scene load_steps=15 format=3 uid="uid://cnsu6sfdku23l"]
+
+[ext_resource type="Script" path="res://scenes/DialogueUI/AskPopup.gd" id="1_nmu6o"]
+[ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextLabel.gd" id="1_rjnec"]
+[ext_resource type="Script" path="res://addons/advanced-text/parsers/MarkdownParser.gd" id="2_of0wd"]
+[ext_resource type="Script" path="res://scenes/DialogueUI/SayPanel.gd" id="3_7gq5t"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4pelf"]
+font_size = 22
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ntd18"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_copr7"]
+font_size = 18
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hvsr1"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Resource" id="Resource_mktlp"]
+script = ExtResource("2_of0wd")
+italics = "*"
+bold = "**"
+points = "-"
+headers = Array[LabelSettings]([SubResource("LabelSettings_4pelf"), SubResource("LabelSettings_ntd18"), SubResource("LabelSettings_copr7"), SubResource("LabelSettings_hvsr1")])
+
+[sub_resource type="LabelSettings" id="LabelSettings_448hn"]
+font_size = 22
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7a85t"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ya5in"]
+font_size = 18
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hq0o8"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Resource" id="Resource_stvyy"]
+script = ExtResource("2_of0wd")
+italics = "*"
+bold = "**"
+points = "-"
+headers = Array[LabelSettings]([SubResource("LabelSettings_448hn"), SubResource("LabelSettings_7a85t"), SubResource("LabelSettings_ya5in"), SubResource("LabelSettings_hq0o8")])
+
+[node name="DialogueUI" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AskPopup" type="Panel" parent="CenterContainer" node_paths=PackedStringArray("character_name_label", "dialogue_label")]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.5)
+custom_minimum_size = Vector2(600, 200)
+layout_mode = 2
+script = ExtResource("1_nmu6o")
+character_name_label = NodePath("VBoxContainer/CharacterNameLabel")
+dialogue_label = NodePath("VBoxContainer/DialogueLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/AskPopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CharacterNameLabel" type="RichTextLabel" parent="CenterContainer/AskPopup/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[bgcolor=#00000000][font_size=22]Character Name[/font_size][/bgcolor]
+"
+fit_content = true
+script = ExtResource("1_rjnec")
+_text = "# Character Name
+"
+parser = SubResource("Resource_mktlp")
+
+[node name="DialogueLabel" type="RichTextLabel" parent="CenterContainer/AskPopup/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Text of some dialogue
+"
+fit_content = true
+script = ExtResource("1_rjnec")
+_text = "Text of some dialogue
+"
+parser = SubResource("Resource_mktlp")
+
+[node name="LineEdit" type="LineEdit" parent="CenterContainer/AskPopup/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Default answer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/AskPopup/VBoxContainer"]
+layout_mode = 2
+
+[node name="DefaultAnswerBtn" type="Button" parent="CenterContainer/AskPopup/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Default answer"
+
+[node name="OkBtn" type="Button" parent="CenterContainer/AskPopup/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ok"
+
+[node name="MenuScrollContainer" type="ScrollContainer" parent="CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MenuBox" type="VBoxContainer" parent="CenterContainer/MenuScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SayPanel" type="Panel" parent="." node_paths=PackedStringArray("character_name_label", "dialogue_label")]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.5)
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+script = ExtResource("3_7gq5t")
+character_name_label = NodePath("VBoxContainer/HBoxContainer/CharacterNameLabel")
+dialogue_label = NodePath("VBoxContainer/DialogueLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SayPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SayPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="CharacterNameLabel" type="RichTextLabel" parent="SayPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[bgcolor=#00000000][font_size=22]Character Name[/font_size][/bgcolor]
+"
+fit_content = true
+script = ExtResource("1_rjnec")
+_text = "# Character Name
+"
+parser = SubResource("Resource_stvyy")
+
+[node name="DialogueLabel" type="RichTextLabel" parent="SayPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Text of some dialogue
+"
+fit_content = true
+script = ExtResource("1_rjnec")
+_text = "Text of some dialogue
+"
+parser = SubResource("Resource_mktlp")
