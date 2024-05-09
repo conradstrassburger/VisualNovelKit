@@ -1,3 +1,4 @@
+@tool
 extends DialoguePanel
 
 ## if true then it will be shown on `menu` staments
@@ -17,8 +18,7 @@ func _on_say(character:Dictionary, text:String):
 	set_labels(character, text)
 
 func _process(_delta):
-	if !Rakugo.is_waiting_step():
-		hide()
+	if Engine.is_editor_hint():
 		return
 
 	if keep_on_menu:
@@ -32,9 +32,9 @@ func _process(_delta):
 			return
 	
 	if not keep_on_menu:
-	if Input.is_action_just_pressed("interact"):
-		Rakugo.do_step()
-		hide()
+		if Input.is_action_just_pressed("interact"):
+			Rakugo.do_step()
+			hide()
 
 func _on_menu(_choices:Array):
 	next_button.hide()
