@@ -1,3 +1,4 @@
+@tool
 extends DialoguePanel
 
 @export var line_edit : LineEdit
@@ -11,6 +12,9 @@ func _on_ask(character:Dictionary, question:String, default_answer:String):
 	line_edit.placeholder_text = default_answer
 
 func _process(_delta):
+	if Engine.is_editor_hint():
+		return
+
 	if not Rakugo.is_waiting_ask_return():
 		hide()
 		return
