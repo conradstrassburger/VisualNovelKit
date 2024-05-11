@@ -44,7 +44,12 @@ MaterialIconsDB="*res://addons/material-design-icons/icons/icons.gd"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/resizable=false
+window/size/always_on_top=true
 window/stretch/mode="canvas_items"
+
+[editor]
+
+script/search_in_file_extensions=PackedStringArray("gd", "gdshader", "rk")
 
 [editor_plugins]
 

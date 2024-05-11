@@ -8,7 +8,11 @@ func _ready():
 	if Engine.is_editor_hint():
 		return
 	
-	markup = load(ProjectSettings.get_setting(VisualNovelKit.default_markup_setting))
+	markup = load(
+		ProjectSettings.get_setting(
+			VisualNovelKit.default_markup_setting
+		)
+	)
 	Rakugo.sg_menu.connect(_on_menu)
 	
 	if parent:

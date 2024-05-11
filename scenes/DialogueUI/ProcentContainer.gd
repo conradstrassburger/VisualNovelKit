@@ -11,7 +11,7 @@ class_name ProcentControl
 ## It chaning this works only in Editor
 @export var procent_size := Vector2(100, 100):
 	set(value):
-		if Engine.is_editor_hint():
+		if not Engine.is_editor_hint():
 			procent_size = value
 			custom_minimum_size = root.size * (procent_size / 100.0)
 		else:

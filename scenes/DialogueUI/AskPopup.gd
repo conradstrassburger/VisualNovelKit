@@ -4,6 +4,9 @@ extends DialoguePanel
 @export var line_edit : LineEdit
 
 func _ready():
+	if Engine.is_editor_hint():
+		return
+	
 	super._ready()
 	Rakugo.sg_ask.connect(_on_ask)
 
