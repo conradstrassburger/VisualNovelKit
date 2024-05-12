@@ -1,20 +1,32 @@
 # This is only a test script you can remove it when you have your own
 
-character test "Test Character"
-test.color = "#0967ff"
+test_menu:
+	character test "Test Character"
+	test.color = "#0967ff"
+	hide godot
+
+	menu:
+		"test say" > test_say
+		"test ask" > test_ask
+		"test menu" > test_menu
+		"show & hide test" > test_show
 
 test_say:
 	"Narrator says something"
 	test "Test character is saying something its @color=<test.color> {name} should be colored"
-	jump test_ask
+	jump test_menu
 
 test_ask:
 	test_var = ? test "Give some answer" "Some default answer"
 	"You gave answer: @color=<test.color> {<test_var>}"
 	jump test_menu
 
-test_menu:
-	menu:
-		"test say" > test_say
-		"test ask" > test_ask
-		"test menu" > test_menu
+test_show:
+	"Click next and godot logo should appear"
+	show godot
+	"Click next and godot logo should become red"
+	show godot red
+	"Click next and godot logo should hide"
+	hide godot
+	jump test_menu
+

@@ -35,9 +35,10 @@ ProjectMusicController="*res://addons/rakugo_game_template/Autoloads/ProjectMusi
 UISoundManager="*res://addons/rakugo_game_template/Autoloads/UISoundManager/UISoundManager.tscn"
 Transitions="*res://addons/rakugo_game_template/Autoloads/Transitions/transitions.tscn"
 Rakugo="*res://addons/Rakugo/Rakugo.gd"
-AdvancedText="*res://addons/advanced-text/AdvancedText.gd"
+VnKitRksExtensions="*res://addons/visualnovelkit/VNKitRKSExtensions.gd"
 EmojisDB="*res://addons/emojis-for-godot/emojis/emojis.gd"
 MaterialIconsDB="*res://addons/material-design-icons/icons/icons.gd"
+AdvancedText="*res://addons/advanced-text/AdvancedText.gd"
 
 [display]
 
