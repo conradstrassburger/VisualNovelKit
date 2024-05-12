@@ -17,7 +17,6 @@ func _ready():
 	get_tree().node_added.connect(node_added)
 	get_tree().node_removed.connect(node_removed)
 	update_group(show_group_name, show_group, ["show", "hide"])
-	prints("show group:", show_group)
 
 func node_added(node:Node):
 	if node.is_in_group(show_group_name):
@@ -80,17 +79,14 @@ func call_on_nodes_in_group(nodes: Array, group_dict: Dictionary, method: String
 		if nodes.size() > 0:
 			call_on_nodes_in_group(nodes, group_dict[node_id], method)
 
-# func call_on_last_node(nodes: Array, group_dict: Dictionary, method: String, args:=[]):
-# 	if nodes == 0:
+func call_on_last_node(nodes: Array, group_dict: Dictionary, method: String, args:=[]):
+	var node_id = nodes.pop_front()
+	while nodes.size() > 1:
+		node_id = nodes.pop_front()
+		group_dict = group_dict[node_id]
+		print(group_dict)
 
-# 	var node
-# 	var node_id
-# 	while nodes.size() > 1:
-# 		node_id = nodes.pop_front()
-# 		group_dict = group_dict[node_id]
-# 		print(group_dict)
-
-# 		call_on_node_in_group(node_id, group_dict, method, args)
+	call_on_node_in_group(node_id, group_dict, method, args)
 
 func _on_custom_regex(key:String, result:RegExMatch):
 	match key:
@@ -104,12 +100,12 @@ func _on_custom_regex(key:String, result:RegExMatch):
 
 			call_on_nodes_in_group(nodes, show_group, "show")
 		
-		# "hide":
-		# 	if result.get_group_count() == 0:
-		# 		push_error(err_mess_01 % ["hide", show_group_name])
-		# 		return
+		"hide":
+			if result.get_group_count() == 0:
+				push_error(err_mess_01 % ["hide", show_group_name])
+				return
 
-		# 	var g1 := result.get_string(1)
-		# 	var nodes := Array(g1.split(" ", false))
+			var g1 := result.get_string(1)
+			var nodes := Array(g1.split(" ", false))
 
-		# 	call_on_last_node(nodes, show_group, "hide")
+			call_on_last_node(nodes, show_group, "hide")
