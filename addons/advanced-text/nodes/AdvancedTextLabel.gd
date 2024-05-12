@@ -39,7 +39,7 @@ signal custom_link(url:String)
 						h.changed.connect(_parse_text)
 
 			_parse_text()
-			print("parse text")
+			# print("parse text")
 	
 	get: return parser
 
