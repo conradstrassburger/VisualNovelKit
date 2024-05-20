@@ -3,12 +3,11 @@
 test_menu:
 	character test "Test Character"
 	test.color = "#0967ff"
-	hide godot
+	hide Godot
 
 	menu:
 		"test say" > test_say
 		"test ask" > test_ask
-		"test menu" > test_menu
 		"show & hide test" > test_show
 
 test_say:
@@ -23,10 +22,14 @@ test_ask:
 
 test_show:
 	"Click next and godot logo should appear"
-	show godot
+	show Godot
+	"Click next and logo should become even more blue"
+	show Godot Red Blue
 	"Click next and godot logo should become red"
-	show godot red
+	show Godot Red
+	"Click next and godot logo should become green"
+	show Godot Green
 	"Click next and godot logo should hide"
-	hide godot
+	hide Godot
 	jump test_menu
 

@@ -32,7 +32,13 @@ position = Vector2(623, 274)
 texture = ExtResource("6_sgy42")
 
 [node name="Red" type="Sprite2D" parent="Godot"]
+visible = false
 self_modulate = Color(1, 0, 0, 1)
+texture = ExtResource("6_sgy42")
+
+[node name="Blue" type="Sprite2D" parent="Godot/Red"]
+visible = false
+self_modulate = Color(5.77569e-07, 0.581803, 0.664193, 1)
 texture = ExtResource("6_sgy42")
 
 [node name="Green" type="Sprite2D" parent="Godot"]
