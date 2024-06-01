@@ -4,6 +4,7 @@ class_name RKSExtension
 const err_mess_01 := "%s stament is missing any node name from `%s` group"
 const err_mess_02 := "there is %s node in `%s` group"
 const err_mess_03 := "node %s in `%s` group dosen't have method %s"
+const err_mess_04 := "statment %s must be after %s statement"
 
 var group_name : StringName:
 	get: return _group_name()

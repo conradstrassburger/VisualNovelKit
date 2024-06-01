@@ -9,6 +9,7 @@ test_menu:
 		"test say" > test_say
 		"test ask" > test_ask
 		"show & hide test" > test_show
+		"notifications test" > test_notifications
 
 test_say:
 	"Narrator says something"
@@ -32,4 +33,13 @@ test_show:
 	"Click next and godot logo should hide"
 	hide Godot
 	jump test_menu
+
+test_notifications:
+	"Click next and notification should appear"
+	notif: "some notification"
+	"You should see notification in top right corner"
+	"Click next and notification should appear, but for shorter time"
+	notif 0.3: "some shorter time notification"
+	jump test_menu
+
 
