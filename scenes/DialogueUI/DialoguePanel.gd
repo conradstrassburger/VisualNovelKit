@@ -2,15 +2,18 @@
 extends ProcentControl
 class_name DialoguePanel
 
-@export var character_name_label : AdvancedTextLabel
-@export var dialogue_label : AdvancedTextLabel
+@export var character_name_label : AdvancedTextLabel = null
+@export var dialogue_label : AdvancedTextLabel = null
 
 var markup : TextParser
 
 func _ready():
-	markup = load(ProjectSettings.get_setting(VisualNovelKit.default_markup_setting))
-	character_name_label.parser = markup
-	dialogue_label.parser = markup
+	markup = load(VisualNovelKit.default_markup_setting)
+	if character_name_label:
+		character_name_label.parser = markup
+	
+	if dialogue_label:
+		dialogue_label.parser = markup
 
 	visibility_changed.connect(_on_visibility_changed)
 	

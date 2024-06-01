@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cnsu6sfdku23l"]
+[gd_scene load_steps=13 format=3 uid="uid://cnsu6sfdku23l"]
 
 [ext_resource type="Script" path="res://scenes/DialogueUI/AskPopup.gd" id="1_nmu6o"]
 [ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextLabel.gd" id="1_rjnec"]
+[ext_resource type="Script" path="res://scenes/DialogueUI/NotifyPanel.gd" id="1_sgtja"]
 [ext_resource type="Resource" uid="uid://6ioam3qiqsqa" path="res://addons/visualnovelkit/default_markups/def_markdown.tres" id="3_2rcj6"]
 [ext_resource type="Script" path="res://scenes/DialogueUI/SayPanel.gd" id="3_7gq5t"]
 [ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextButton.gd" id="4_d7ojs"]
@@ -9,7 +10,7 @@
 [ext_resource type="Script" path="res://scenes/DialogueUI/MenuBox.gd" id="6_3oawk"]
 [ext_resource type="Script" path="res://addons/visualnovelkit/extra_text_fx/ghost_tfx.gd" id="7_gqpod"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_40nen"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fsqeh"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -30,7 +31,7 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6muo1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aliap"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -52,6 +53,42 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="NotifyPanel" type="Panel" parent="." node_paths=PackedStringArray("notification_label", "timer", "root")]
+self_modulate = Color(1, 1, 1, 0.5)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.687
+anchor_right = 1.0
+anchor_bottom = 0.082
+offset_left = -0.360046
+offset_bottom = -0.0400009
+grow_horizontal = 2
+script = ExtResource("1_sgtja")
+notification_label = NodePath("DialogueLabel")
+timer = NodePath("Timer")
+root = NodePath("..")
+
+[node name="DialogueLabel" type="RichTextLabel" parent="NotifyPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Text of some dialogue
+"
+fit_content = true
+script = ExtResource("1_rjnec")
+_text = "Text of some dialogue
+"
+parser = ExtResource("3_2rcj6")
+
+[node name="Timer" type="Timer" parent="NotifyPanel"]
+one_shot = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -119,8 +156,8 @@ layout_mode = 2
 [node name="DefaultAnswerBtn" type="RichTextLabel" parent="VBoxContainer/CenterContainer/AskPopup/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/focus = SubResource("StyleBoxFlat_40nen")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6muo1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_fsqeh")
+theme_override_styles/normal = SubResource("StyleBoxFlat_aliap")
 bbcode_enabled = true
 text = "[center] Default answer [font=res://addons/material-design-icons/fonts/material_design_icons.ttf][/font] [/center]"
 fit_content = true
@@ -133,8 +170,8 @@ parser = ExtResource("3_2rcj6")
 [node name="OkBtn" type="RichTextLabel" parent="VBoxContainer/CenterContainer/AskPopup/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/focus = SubResource("StyleBoxFlat_40nen")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6muo1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_fsqeh")
+theme_override_styles/normal = SubResource("StyleBoxFlat_aliap")
 bbcode_enabled = true
 text = "[center] Ok [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰄳[/font] [/center]"
 fit_content = true
@@ -211,8 +248,8 @@ layout_mode = 2
 
 [node name="NextBtn" type="RichTextLabel" parent="VBoxContainer/SayPanel/VBoxContainer/HBoxContainer2/CenterContainer"]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxFlat_40nen")
-theme_override_styles/normal = SubResource("StyleBoxFlat_6muo1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_fsqeh")
+theme_override_styles/normal = SubResource("StyleBoxFlat_aliap")
 bbcode_enabled = true
 text = "[ghost freq=1.0 span=3.0]Next [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰊍[/font][/ghost]"
 fit_content = true
