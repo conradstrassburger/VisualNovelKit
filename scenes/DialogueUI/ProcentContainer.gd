@@ -5,7 +5,7 @@ extends Control
 class_name ProcentControl
 
 ## Node that which size will be used as 100 procent
-@export var root : Control
+@export var root : Control = null
 
 ## Set it from 1 to 100
 ## It chaning this works only in Editor
@@ -13,7 +13,8 @@ class_name ProcentControl
 	set(value):
 		if not Engine.is_editor_hint():
 			procent_size = value
-			custom_minimum_size = root.size * (procent_size / 100.0)
+			if root:
+				custom_minimum_size = root.size * (procent_size / 100.0)
 		else:
 			push_warning("Changing procent_size works only inside Editor")
 	
