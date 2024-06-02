@@ -20,20 +20,17 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 14.0
-offset_top = 20.0
-offset_right = 107.0
-offset_bottom = 375.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="Help" type="RichTextLabel" parent="Panel/Box"]
-modulate = Color(1, 1, 1, 0.752941)
+[node name="Help" type="Label" parent="Panel/Box"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-bbcode_enabled = true
+theme_override_constants/outline_size = 2
 text = "Rakugo Regular expressions (RegEx) can be used for to add your own exstensions to RakuScript programming language."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="RkRegexBox" type="HBoxContainer" parent="Panel/Box"]
 unique_name_in_owner = true
@@ -45,6 +42,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
 size_flags_stretch_ratio = 0.08
+theme_override_constants/outline_size = 2
 text = "Rakugo
 RegEx"
 horizontal_alignment = 1
@@ -66,6 +64,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
 size_flags_stretch_ratio = 0.08
+theme_override_constants/outline_size = 2
 text = "RegEx"
 horizontal_alignment = 1
 
@@ -85,6 +84,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
 size_flags_stretch_ratio = 0.08
+theme_override_constants/outline_size = 2
 text = "Text"
 horizontal_alignment = 1
 
@@ -99,6 +99,7 @@ placeholder_text = "Text to search in"
 [node name="Label" type="Label" parent="Panel/Box"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/outline_size = 2
 text = "Debug"
 horizontal_alignment = 1
 
@@ -110,7 +111,6 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 
-[connection signal="meta_clicked" from="Panel/Box/Help" to="." method="_on_help_meta_clicked"]
 [connection signal="text_changed" from="Panel/Box/RkRegexBox/Expression" to="." method="_on_rkreg_expression_text_changed"]
 [connection signal="text_changed" from="Panel/Box/RegexBox/RegExpression" to="." method="update_expression"]
 [connection signal="text_changed" from="Panel/Box/HBoxContainer2/Text" to="." method="update_text"]

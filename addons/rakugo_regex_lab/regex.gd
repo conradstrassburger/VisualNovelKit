@@ -37,6 +37,7 @@ func update_text():
 				match_number += 1
 				# `match` is a reserved GDScript keyword.
 				var match_label = Label.new()
+				match_label.set("theme_override_constants/outline_size", 2)
 				match_label.text = "RegEx match #%d:" % match_number
 				match_label.modulate = Color(0.6, 0.9, 1.0)
 				%List.add_child(match_label)
@@ -44,6 +45,7 @@ func update_text():
 				var capture_number = 0
 				for result in regex_match.get_strings():
 					var capture_label = Label.new()
+					capture_label.set("theme_override_constants/outline_size", 2)
 					capture_label.text = "Capture group #%d: %s" % [capture_number, result]
 					%List.add_child(capture_label)
 					capture_number += 1
@@ -51,11 +53,9 @@ func update_text():
 		%RkRegexBox.modulate = Color(1, 0.2, 0.1)
 		%RegexBox.modulate = Color(1, 0.2, 0.1)
 		var label = Label.new()
+		label.set("theme_override_constants/outline_size", 2)
 		label.text = "Error: Invalid regular expression. Check if the expression is correctly escaped and terminated."
 		%List.add_child(label)
-
-func _on_help_meta_clicked(meta):
-	OS.shell_open(meta)
 
 func _on_rkreg_expression_text_changed(new_text):
 	new_text = new_text.format(RkRegex)
