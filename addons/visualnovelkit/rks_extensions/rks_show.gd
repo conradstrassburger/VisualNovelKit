@@ -1,33 +1,30 @@
 extends RKSExtension
 
 func _group_name() -> StringName:
-	return keys.show
+	return Show
 
-const keys := {
-	show = "show",
-	hide = "hide",
-	at_precise = "at precise",
-	at_percent = "at percent",
-	at_one = "at one",
-
-}
+const Show := "show"
+const Hide := "hide"
+const AtPrecise = "at precise"
+const AtPercent = "at percent"
+const AtOne = "at one"
 
 const regex := {
-	keys.show:
+	Show:
 		"^show(( +\\w+)+)$",
-	keys.hide:
+	Hide:
 		"^hide(( +\\w+)+)$",
-	keys.at_precise:
+	AtPrecise:
 		"^at +({NUMERIC}) +({NUMERIC})( +({NUMERIC}))?$",
-	keys.at_percent:
+	AtPercent:
 		"^at% +({NUMERIC}) +({NUMERIC})$",
-	keys.at_one:
+	AtOne:
 		"^at ([xyz]) *=? *({NUMERIC})$",
 
 }
 
 func _ready():
-	for key in keys:
+	for key in regex:
 		Rakugo.add_custom_regex(key, regex[key])
 
 	super._ready()
@@ -36,9 +33,9 @@ var last_node : Node
 
 func _on_custom_regex(key:String, result:RegExMatch):
 	match key:
-		keys.show:
+		Show:
 			if result.get_group_count() == 0:
-				push_error(err_mess_01 % [keys.show, group_name])
+				push_error(err_mess_01 % [Show, group_name])
 				return
 			
 			var nodes := rk_get_nodes(result.get_string(1))
@@ -46,28 +43,28 @@ func _on_custom_regex(key:String, result:RegExMatch):
 
 			for node in nodes:
 				for ch in node.get_children():
-					try_call_method(ch, keys.hide)
+					try_call_method(ch, Hide)
 				
 				var err := err_mess_03 % [
-					node.name, group_name, keys.show
+					node.name, group_name, Show
 				]
-				try_call_method(node, keys.show, err)
+				try_call_method(node, Show, err)
 
-		keys.hide:
+		Hide:
 			if result.get_group_count() == 0:
-				push_error(err_mess_01 % [keys.hide, group_name])
+				push_error(err_mess_01 % [Hide, group_name])
 				return
 
 			var nodes := rk_get_nodes(result.get_string(1))
 			for node in nodes:
 				var err := err_mess_03 % [
-					node.name, group_name, keys.hide
+					node.name, group_name, Hide
 				]
-				try_call_method(node, keys.hide, err)
+				try_call_method(node, Hide, err)
 		
-		keys.at_precise:
+		AtPrecise:
 			if !last_node:
-				push_error(err_mess_04 % ["at", keys.show])
+				push_error(err_mess_04 % ["at", Show])
 				return
 			
 			if result.get_group_count() == 0:
@@ -84,16 +81,16 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			
 				last_node.position = Vector2(x, y)
 		
-		keys.at_one:
-			if !last_node:
-				push_error(err_mess_04 % ["at", keys.show])
-				return
+		# AtOne:
+		# 	if !last_node:
+		# 		push_error(err_mess_04 % ["at", Show])
+		# 		return
 			
-			if result.get_group_count() == 0:
-				# add error for to small numer of args ?
-				return
+		# 	if result.get_group_count() == 0:
+		# 		# add error for to small numer of args ?
+		# 		return
 			
-			var axis := 
+		# 	var axis := 
 
 
 
