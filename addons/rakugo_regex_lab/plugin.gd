@@ -5,7 +5,6 @@ const regex_lab_path := "res://addons/rakugo_regex_lab/regex.tscn"
 var command_palette := get_editor_interface().get_command_palette()
 var editor_interface := get_editor_interface().get_base_control()
 var regex_lab : Window
-var popup_size := Vector2(450, 400)
 
 func _enter_tree():
 	add_tool_menu_item("Rakugo Regex Lab", show_regex_lab)
@@ -18,7 +17,7 @@ func show_regex_lab():
 		editor_interface.add_child.call_deferred(regex_lab)
 
 	regex_lab.theme = editor_interface.theme
-	regex_lab.popup_centered(popup_size)
+	regex_lab.popup_centered(regex_lab.size)
 
 func _exit_tree():
 	remove_tool_menu_item("Rakugo Regex Lab")

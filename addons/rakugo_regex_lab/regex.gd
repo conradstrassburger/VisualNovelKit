@@ -1,8 +1,6 @@
 @tool
 extends Window
 
-@export var window: Window
-
 var RkRegex := {
 	NAME = "[a-zA-Z][a-zA-Z_0-9]*",
 	NUMERIC = "-?[0-9]\\.?[0-9]*",
