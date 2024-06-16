@@ -20,7 +20,6 @@ const regex := {
 		"^at% +({NUMERIC}) +({NUMERIC})$",
 	AtOne:
 		"^at ([xyz]) *=? *({NUMERIC})$",
-
 }
 
 func _ready():
@@ -39,7 +38,7 @@ func _on_custom_regex(key:String, result:RegExMatch):
 				return
 			
 			var nodes := rk_get_nodes(result.get_string(1))
-			last_node = nodes.back()
+			last_node = nodes[0]
 
 			for node in nodes:
 				for ch in node.get_children():
@@ -69,6 +68,7 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			
 			if result.get_group_count() == 0:
 				# add error for to small numer of args ?
+				push_error("error: " + result.get_string(0))
 				return
 			
 			var x := float(result.get_string(1))
@@ -79,18 +79,34 @@ func _on_custom_regex(key:String, result:RegExMatch):
 				last_node.position = Vector3(x, y, z)
 				return
 			
-				last_node.position = Vector2(x, y)
+			last_node.position = Vector2(x, y)
 		
-		# AtOne:
-		# 	if !last_node:
-		# 		push_error(err_mess_04 % ["at", Show])
-		# 		return
+		AtOne:
+			if !last_node:
+				push_error(err_mess_04 % ["at", Show])
+				return
 			
-		# 	if result.get_group_count() == 0:
-		# 		# add error for to small numer of args ?
-		# 		return
+			if result.get_group_count() == 0:
+				# add error for to small numer of args ?
+				return
 			
-		# 	var axis := 
+			var axis := result.get_string(1)
+			var value := float(result.get_string(2))
+			match axis:
+				"x":
+					last_node.position.x = value
+				"y":
+					last_node.position.y = value
+				"z":
+					last_node.position.z = value
+			
+		AtPercent:
+			var procent := Vector2()
+			procent.x = float(result.get_string(1))/100
+			procent.y = float(result.get_string(2))/100
+			var vp_size := get_viewport().get_visible_rect().size
+			last_node.position = procent * vp_size
+
 
 
 

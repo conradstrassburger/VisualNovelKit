@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://scenes/DialogueUI/MenuBox.gd" id="6_3oawk"]
 [ext_resource type="Script" path="res://addons/visualnovelkit/extra_text_fx/ghost_tfx.gd" id="7_gqpod"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8lfb"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfrb0"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -31,7 +31,7 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_meye5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iuf80"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -156,8 +156,8 @@ layout_mode = 2
 [node name="DefaultAnswerBtn" type="RichTextLabel" parent="VBoxContainer/CenterContainer/AskPopup/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/focus = SubResource("StyleBoxFlat_j8lfb")
-theme_override_styles/normal = SubResource("StyleBoxFlat_meye5")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qfrb0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iuf80")
 bbcode_enabled = true
 text = "[center] Default answer [font=res://addons/material-design-icons/fonts/material_design_icons.ttf][/font] [/center]"
 fit_content = true
@@ -170,8 +170,8 @@ parser = ExtResource("3_2rcj6")
 [node name="OkBtn" type="RichTextLabel" parent="VBoxContainer/CenterContainer/AskPopup/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/focus = SubResource("StyleBoxFlat_j8lfb")
-theme_override_styles/normal = SubResource("StyleBoxFlat_meye5")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qfrb0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iuf80")
 bbcode_enabled = true
 text = "[center] Ok [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰄳[/font] [/center]"
 fit_content = true
@@ -248,8 +248,8 @@ layout_mode = 2
 
 [node name="NextBtn" type="RichTextLabel" parent="VBoxContainer/SayPanel/VBoxContainer/HBoxContainer2/CenterContainer"]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxFlat_j8lfb")
-theme_override_styles/normal = SubResource("StyleBoxFlat_meye5")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qfrb0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iuf80")
 bbcode_enabled = true
 text = "[ghost freq=1.0 span=3.0]Next [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰊍[/font][/ghost]"
 fit_content = true

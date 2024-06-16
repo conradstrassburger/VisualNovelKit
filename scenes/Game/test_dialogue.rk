@@ -8,8 +8,9 @@ test_menu:
 	menu:
 		"test say" > test_say
 		"test ask" > test_ask
-		"show & hide test" > test_show
-		"notifications test" > test_notifications
+		"test notifications" > test_notifications
+		"test show & hide" > test_show
+		"test at" > test_at
 
 test_say:
 	"Narrator says something"
@@ -30,6 +31,18 @@ test_show:
 	show Godot Red
 	"Click next and godot logo should become green"
 	show Godot Green
+	"Click next and godot logo should hide"
+	hide Godot
+	jump test_menu
+
+test_at:
+	"Click next and godot logo should appear"
+	show Godot
+	at% 50 50
+	"Click next and godot move to 48 56"
+	at 48 56
+	"Click next and godot move to 8% 8% procent of window"
+	at% 8 16
 	"Click next and godot logo should hide"
 	hide Godot
 	jump test_menu
