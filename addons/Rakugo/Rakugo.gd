@@ -1,67 +1,80 @@
 extends Node
 
-# Rakugo
-## Setting's strings
+# Rakugo setting's strings
 const game_version = "addons/rakugo/game_version"
-const force_reload = "addons/rakugo/force_reload"
-const auto_mode_delay = "addons/rakugo/auto_mode_delay"
-const typing_effect_delay = "addons/rakugo/typing_effect_delay"
-const skip_delay = "addons/rakugo/skip_delay"
-const rollback_steps = "addons/rakugo/rollback_steps"
 const history_length = "addons/rakugo/history_length"
 const narrator_name = "addons/rakugo/narrator/name"
 const debug = "addons/rakugo/debug"
 const save_folder = "addons/rakugo/save_folder"
-const test_mode = "addons/rakugo/test_mode"
 
-#Godot
-## Setting's strings
+#Godot setting's strings
 const game_title = "application/config/name"
-const main_scene = "application/run/main_scene"
-const width = "display/window/size/width"
-const height = "display/window/size/height"
-const fullscreen = "display/window/size/fullscreen"
-const maximized = "display/window/size/maximized"
 
-const version := "1.1.2"
+const version := "2.2"
 
-const StoreManager = preload("res://addons/Rakugo/lib/systems/StoreManager.gd")
-const Parser = preload("res://addons/Rakugo/lib/systems/Parser.gd")
-const Executer = preload("res://addons/Rakugo/lib/systems/Executer.gd")
+const StoreManager = preload ("res://addons/Rakugo/lib/systems/StoreManager.gd")
+const Parser = preload ("res://addons/Rakugo/lib/systems/Parser.gd")
+const Executer = preload ("res://addons/Rakugo/lib/systems/Executer.gd")
 
-var waiting_step := false setget , is_waiting_step
+var waiting_step := false: get = is_waiting_step
 
 var variable_ask_name: String
-var waiting_ask_return := false setget , is_waiting_ask_return
+var waiting_ask_return := false: get = is_waiting_ask_return
 
-var waiting_menu_return := false setget , is_waiting_menu_return
+var waiting_menu_return := false: get = is_waiting_menu_return
 
 # when you load game to run last script
-var last_thread_datas:Dictionary
+var last_thread_datas: Dictionary
 
-onready var store_manager := StoreManager.new()
-onready var parser := Parser.new(store_manager)
-onready var executer := Executer.new(store_manager)
+@onready var store_manager := StoreManager.new()
+@onready var parser := Parser.new()
+@onready var executer := Executer.new()
+@onready var mutex := Mutex.new()
 
-signal step
-signal say(character, text)
-signal notify(text)
-signal ask(character, question, default_answer)
-signal menu(choices)
-signal parser_unhandled_regex(key, result)
-signal execute_script_start(file_name)
-signal execute_script_finished(file_name, error_str)
-signal variable_changed(var_name, value)
-signal character_variable_changed(character_tag, var_name, value)
+signal sg_step
+signal sg_game_loaded
+signal sg_say(character, text)
+signal sg_notify(text)
+signal sg_ask(character, question, default_answer)
+signal sg_menu(choices)
+signal sg_custom_regex(key, result)
+signal sg_execute_script_start(file_name)
+signal sg_execute_script_finished(file_name, error_str)
+signal sg_variable_changed(var_name, value)
+signal sg_character_variable_changed(character_tag, var_name, value)
 
-## Variables
+## Replaces <var_name> in given text with its value
+func replace_variables(text: String) -> String:
+	var sub_results = executer.regex_cache["VARIABLE_IN_STR"].search_all(text)
+	
+	for sub_result in sub_results:
+		var var_ = Rakugo.get_variable(sub_result.get_string("variable"))
+		
+		if var_:
+			if typeof(var_) != TYPE_STRING:
+				var_ = str(var_)
+
+			text = text.replace(sub_result.strings[0], var_)
+	
+	return text
+
+## Used to be call with call_thread_safe.
+func emit_sg_variable_changed(var_name: String, value):
+	sg_variable_changed.emit(var_name, value)
+
+## Create or set (if existed) a global or character variable.
+## global variable : var_name = "name"
+## character variable : var_name = "char_tag.name"
 func set_variable(var_name: String, value):
 	var vars_ = var_name.split(".")
 	
 	match vars_.size():
 		1:
+			mutex.lock()
 			store_manager.variables[var_name] = value
-			emit_signal("variable_changed", var_name, value)
+			mutex.unlock()
+
+			call_thread_safe("emit_sg_variable_changed", var_name, value)
 			return
 
 		2:
@@ -69,14 +82,25 @@ func set_variable(var_name: String, value):
 		
 	push_error("Rakugo does not allow to store variables with more than 1 dot in name.")
 
-
+## Return a global or character variable if stored.
+## global variable : var_name = "name"
+## character variable : var_name = "char_tag.name"
 func get_variable(var_name: String):
 	var vars_ = var_name.split(".")
 
 	match vars_.size():
 		1:
+			var variable = null
+
+			mutex.lock()
 			if store_manager.variables.has(var_name):
-				return store_manager.variables.get(var_name)
+				variable = store_manager.variables.get(var_name)
+			mutex.unlock()
+			
+			if variable is String:
+				return replace_variables(variable)
+
+			return variable
 
 		2:
 			return get_character_variable(vars_[0], vars_[1])
@@ -85,13 +109,21 @@ func get_variable(var_name: String):
 
 	return null
 
-
+## Return true if a global or character variable is founded with this name.
+## global variable : var_name = "name"
+## character variable : var_name = "char_tag.name"
 func has_variable(var_name: String) -> bool:
 	var vars_ = var_name.split(".")
 
 	match vars_.size():
 		1:
-			return store_manager.variables.has(var_name)
+			var has_variable = false
+
+			mutex.lock()
+			has_variable = store_manager.variables.has(var_name)
+			mutex.unlock()
+
+			return has_variable
 
 		2:
 			return character_has_variable(vars_[0], vars_[1])
@@ -100,226 +132,318 @@ func has_variable(var_name: String) -> bool:
 
 	return false
 
-
-## Characters
-# create new character, store it into current store using its tag, then return it
+#### Characters
+## create new character, and store it using its tag
 func define_character(character_tag: String, character_name: String):
+	mutex.lock()
 	store_manager.characters[character_tag] = {"name": character_name}
-
-
-func character_exists(character_tag: String) -> bool:
-	push_warning("Obsolete, in next version will be removed, use has_character() instead")
-	return has_character(character_tag)
+	mutex.unlock()
 
 func has_character(character_tag: String) -> bool:
-	return store_manager.characters.has(character_tag)
+	var has_character = false
 
+	mutex.lock()
+	has_character = store_manager.characters.has(character_tag)
+	mutex.unlock()
+
+	return has_character
 
 func get_character(character_tag: String) -> Dictionary:
-	if character_tag.empty():
-		push_warning("Character tag is empty")
-		return {}
+	var character = {}
 
-	if has_character(character_tag):
-		return store_manager.characters.get(character_tag)
+	if character_tag.is_empty():
+		return character
 
-	push_error("Rakugo does not knew a character with this tag: " + character_tag)
+	mutex.lock()
+	character = store_manager.characters.get(character_tag, {})
 
-	return {}
+	if character.is_empty():
+		push_error("Rakugo does not knew a character with this tag: " + character_tag)
 
+	mutex.unlock()
+	return character
 
 func get_narrator():
 	return get_character("narrator")
 
+##Used to be call with call_thread_safe
+func emit_sg_character_variable_changed(character_tag: String, var_name: String, value):
+	sg_character_variable_changed.emit(character_tag, var_name, value)
 
 func set_character_variable(character_tag: String, var_name: String, value):
+	var character = get_character(character_tag)
 
-	var char_ = get_character(character_tag)
+	mutex.lock()
+	if !character.is_empty():
+		character[var_name] = value
 
-	if !char_.empty():
-		char_[var_name] = value
-		emit_signal("character_variable_changed", character_tag, var_name, value)
-
+		call_thread_safe("emit_sg_character_variable_changed", character_tag, var_name, value)
+	mutex.unlock()
 
 func character_has_variable(character_tag: String, var_name: String) -> bool:
-	var char_ = get_character(character_tag)
+	var character = get_character(character_tag)
 
-	if !char_.empty():
-		return char_.has(var_name)
+	var has_variable = false
 
-	return false
-
+	mutex.lock()
+	if !character.is_empty():
+		has_variable = character.has(var_name)
+	mutex.unlock()
+	return has_variable
 
 func get_character_variable(character_tag: String, var_name: String):
-	var char_ = get_character(character_tag)
+	var character = get_character(character_tag)
 
-	if !char_.empty():
-		if char_.has(var_name):
-			return char_[var_name]
-		else:
-			push_error(
-				(
-					"Rakugo character with tag "
-					+ character_tag
-					+ " does not have this variable: "
-					+ var_name
-					+ ", returning null"
-				)
+	var character_variable = null
+
+	mutex.lock()
+	if !character.is_empty():
+		character_variable = character.get(var_name)
+
+	if character_variable == null:
+		push_error(
+			(
+				"Rakugo character with tag "
+				+ character_tag
+				+ " does not have this variable: "
+				+ var_name
+				+ ", returning null"
 			)
-			push_error("Available variables are: " + str(char_.keys()))
+		)
+		push_error("Available variables are: " + str(character.keys()))
 
-	return null
+	mutex.unlock()
 
+	if character_variable is String:
+		return replace_variables(character_variable)
+
+	return character_variable
 
 func _ready():
-	var version = ProjectSettings.get_setting(Rakugo.game_version)
-	var title = ProjectSettings.get_setting(Rakugo.game_title)
-	OS.set_window_title(title + " " + version)
+	var version = ProjectSettings.get_setting(game_version)
+	var title = ProjectSettings.get_setting(game_title)
+	get_window().set_title(title + " " + version)
 
-	var narrator_name = ProjectSettings.get_setting(Rakugo.narrator_name)
+	var narrator_name = ProjectSettings.get_setting(narrator_name)
 	define_character("narrator", narrator_name)
 
-
-func save_game(save_name: String = "quick"):
+## Save all variables, characters, script_name and last line readed on last executed script, in user://save/save_name/save.json file.
+func save_game(save_name: String="quick"):
+	mutex.lock()
 	store_manager.save_game(executer.get_current_thread_datas(), save_name)
+	mutex.unlock()
 
-
-func load_game(save_name := "quick"):
+## Load all variables, characters, script_name and last line readed on last executed script, from user://save/save_name/save.json file if existed.
+func load_game(save_name:="quick"):
 	last_thread_datas = store_manager.load_game(save_name)
 	parse_script(last_thread_datas["path"])
+	sg_game_loaded.emit()
 
-func resume_loaded_script():
-	if !last_thread_datas.empty():
-		executer.execute_script(last_thread_datas["file_base_name"], "", last_thread_datas["last_index"])
+## Execute the loaded script from last line readed.
+func resume_loaded_script() -> int:
+	var last_thread_datas_tmp = last_thread_datas
 
-# Parser
+	if last_thread_datas.is_empty():
+		push_error("Rakugo does not have script to reload")
+		return FAILED
+	
+	return execute_script(last_thread_datas["file_base_name"], "", last_thread_datas["last_index"])
+
+## Parser
+## Parse a script and store it. You can execute it with execute_script.
 func parse_script(file_name: String) -> int:
-	return parser.parse_script(file_name)
+	mutex.lock()
+	var rk_lines = store_manager.load_rk(file_name)
+	
+	if rk_lines.is_empty():
+		mutex.unlock()
+		return FAILED
+	
+	var parsed_script = parser.parse_script(rk_lines)
+	
+	if parsed_script.is_empty():
+		mutex.unlock()
+		return FAILED
+		
+	parsed_script["path"] = file_name
+	
+	store_manager.parsed_scripts[file_name.get_file().get_basename()] = parsed_script
+	
+	mutex.unlock()
+	return OK
 
-# Executer
-func execute_script(script_name: String, label_name: String = "") -> int:
-	return executer.execute_script(script_name, label_name)
+## Executer
+## Execute a script previously registered with parse_script.
+func execute_script(script_name: String, label_name: String="", index: int=0) -> int:
+	var error = FAILED
+	
+	mutex.lock()
+	var parsed_script = store_manager.parsed_scripts.get(script_name, {})
+	
+	if parsed_script.is_empty():
+		push_error("Rakugo does not have parse a script named: " + script_name)
+	else:
+		error = executer.execute_script(parsed_script, label_name, index)
+	mutex.unlock()
+	return error
 
+## Stop the current reading script.
 func stop_last_script():
+	mutex.lock()
 	executer.stop_current_thread()
+	mutex.unlock()
 
-func parse_and_execute_script(file_name: String, label_name: String = "") -> int:
-	if parser.parse_script(file_name) == OK:
-		return executer.execute_script(file_name.get_file().get_basename(), label_name)
-	return FAILED
+## Do parse_script, if return OK then do execute_script.
+func parse_and_execute_script(file_name: String, label_name: String="") -> int:
+	var error = FAILED
+	
+	mutex.lock()
+	if parse_script(file_name) == OK:
+		error = execute_script(file_name.get_file().get_basename(), label_name)
+	mutex.unlock()
+	return error
 
+## Call from Executer when a script is started reading.
 func send_execute_script_start(file_base_name: String):
-	emit_signal("execute_script_start", file_base_name)
+	var emit_send_execute_script_start = func():
+		sg_execute_script_start.emit(file_base_name)
+	
+	emit_send_execute_script_start.call_deferred()
 
-func send_execute_script_finished(file_base_name: String, error_str:String):
-	emit_signal("execute_script_finished", file_base_name, error_str)
-
+## Call from Executer when a script is finished reading.
+func send_execute_script_finished(file_base_name: String, error_str: String):
+	var emit_sg_execute_script_finished = func():
+		sg_execute_script_finished.emit(file_base_name, error_str)
+		
+	emit_sg_execute_script_finished.call_deferred()
 
 func _exit_tree() -> void:
+	mutex.lock()
 	executer.stop_current_thread()
-
+	mutex.unlock()
 
 # Todo Handle Error
-func parser_add_regex_at_runtime(key: String, regex: String):
+## Add new custom instruction to RkScript.
+func add_custom_regex(key: String, regex: String):
+	mutex.lock()
 	parser.add_regex_at_runtime(key, regex)
+	mutex.unlock()
 
+#### Statements
+## Used to be call with call_thread_safe.
+func emit_sg_step():
+	sg_step.emit()
 
-## Dialogue flow control
-
-# TODO: remove in future
-# func exit_dialogue():
-# 	self.set_current_dialogue(null)
-
-# func set_current_dialogue(new_dialogue:Dialogue):
-# 	if current_dialogue != new_dialogue:
-# 		if self.current_dialogue \
-# 		and self.current_dialogue.is_running():
-# 			self.current_dialogue.exit()
-
-# 		current_dialogue = new_dialogue
-
-
-# for printing debugs is only print if debug_on == true
-# put some string array or string as argument
-func debug(some_text = []):
-	if not ProjectSettings.get_setting(Rakugo.debug):
-		return
-
-	if typeof(some_text) == TYPE_ARRAY:
-		var new_text = ""
-
-		for i in some_text:
-			new_text += str(i) + " "
-
-		some_text = new_text
-
-	print(some_text)
-
-
-## Statements
+## Call from Executer when is stop the reading process.
 func step():
+	mutex.lock()
 	waiting_step = true
+	mutex.unlock()
 
-	emit_signal("step")
+	call_thread_safe("emit_sg_step")
 
-
+## Returns true when Rakugo waiting call of do_step.
 func is_waiting_step():
-	return waiting_step
+	mutex.lock()
+	var waiting_step_value = waiting_step
+	mutex.unlock()
+	return waiting_step_value
 
-
+## Use it when is_waiting_step return true, to continue script reading process.
 func do_step():
+	mutex.lock()
 	waiting_step = false
 
 	executer.current_semaphore.post()
+	mutex.unlock()
 
-# statement of type say
-# its make given 'character' say 'text'
-# 'parameters' keywords:typing, type_speed, avatar, avatar_state, add
-# speed is time to show next letter
+## Used to be call with call_thread_safe.
+func emit_sg_say(character: Dictionary, text: String):
+	sg_say.emit(character, text)
+
+## Call from Executer when is read an instruction say
 func say(character_tag: String, text: String):
-	Rakugo.emit_signal("say", get_character(character_tag), text)
+	var character = get_character(character_tag)
 
+	call_thread_safe("emit_sg_say", character, text)
 
-# statement of type ask
-# with keywords: placeholder
+## Used to be call with call_thread_safe.
+func emit_sg_ask(character: Dictionary, question: String, default_answer: String):
+	sg_ask.emit(character, question, default_answer)
+
+## Call from Executer when is read an instruction ask.
 func ask(variable_name: String, character_tag: String, question: String, default_answer: String):
+	mutex.lock()
 	waiting_ask_return = true
 
 	variable_ask_name = variable_name
+	mutex.unlock()
+	
+	var character = get_character(character_tag)
+	
+	call_thread_safe("emit_sg_ask", character, question, default_answer)
 
-	Rakugo.emit_signal("ask", get_character(character_tag), question, default_answer)
-
-
+## Returns true when Rakugo waiting call of ask_return.
 func is_waiting_ask_return():
-	return waiting_ask_return
+	var waiting_ask_return_value = false
 
+	mutex.lock()
+	waiting_ask_return_value = waiting_ask_return
+	mutex.unlock()
 
+	return waiting_ask_return_value
+
+## Use it when is_waiting_ask_return return true, to continue script reading process.
 func ask_return(result):
+	mutex.lock()
 	waiting_ask_return = false
+	mutex.unlock()
 
 	set_variable(variable_ask_name, result)
 
+	mutex.lock()
 	executer.current_semaphore.post()
+	mutex.unlock()
 
+## statement of type menu
+## Used to be call with call_thread_safe.
+func emit_sg_menu(choices: PackedStringArray):
+	sg_menu.emit(choices)
 
-# statement of type menu
-func menu(choices: PoolStringArray):
+## Call from Executer when is read an instruction menu.
+func menu(choices: PackedStringArray):
+	mutex.lock()
 	waiting_menu_return = true
+	mutex.unlock()
 
-	Rakugo.emit_signal("menu", choices)
+	call_thread_safe("emit_sg_menu", choices)
 
-
+## Returns true when Rakugo waiting call of menu_return.
 func is_waiting_menu_return():
-	return waiting_menu_return
+	var waiting_menu_return_value = false
 
+	mutex.lock()
+	waiting_menu_return_value = waiting_menu_return
+	mutex.unlock()
 
+	return waiting_menu_return_value
+
+## Use it when is_waiting_menu_return return true, to continue script reading process.
+## index is the index of choosed choice in the choices array given by sg_menu.
 func menu_return(index: int):
+	mutex.lock()
 	waiting_menu_return = false
 	
 	executer.menu_jump_index = index
 
 	executer.current_semaphore.post()
+	mutex.unlock()
 
+## Statement notify
+## Used to be call with call_thread_safe.
+func emit_sg_notify(text: String):
+	sg_notify.emit(text)
 
+## Call from Executer when is read an instruction notify.
 func notify(text: String):
-	emit_signal("notify", text)
+	call_thread_safe("emit_sg_notify", text)

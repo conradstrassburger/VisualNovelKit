@@ -1,88 +1,101 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://bni8w3a3pcbwn"]
 
-[ext_resource path="res://addons/emojis-for-godot/EmojiPanel/Filter.gd" type="Script" id=1]
-[ext_resource path="res://addons/emojis-for-godot/EmojiPanel/NotificationLabel.gd" type="Script" id=2]
-[ext_resource path="res://addons/emojis-for-godot/EmojiPanel/EmojiPanel.gd" type="Script" id=3]
-[ext_resource path="res://addons/emojis-for-godot/EmojiPanel/EmojiGrid.tscn" type="PackedScene" id=4]
+[ext_resource type="Script" path="res://addons/emojis-for-godot/EmojiPanel/EmojiPanel.gd" id="1_nv02s"]
+[ext_resource type="FontFile" uid="uid://be10y8fgoiayy" path="res://addons/emojis-for-godot/emojis/NotoColorEmoji.ttf" id="2_66r43"]
+[ext_resource type="Script" path="res://addons/emojis-for-godot/nodes/EmojiButton.gd" id="3_ytnla"]
 
-[node name="PopupDialog" type="WindowDialog"]
-visible = true
-margin_right = 448.0
-margin_bottom = 504.0
-window_title = "Emoji"
-resizable = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="EmojiFinder" type="Window" node_paths=PackedStringArray("emojis_text", "notify_label", "search_line_edit", "size_slider", "size_label", "scroll_container", "help_button")]
+title = "Emoji Finder"
+initial_position = 2
+size = Vector2i(775, 400)
+script = ExtResource("1_nv02s")
+loading_text = "[center] [pulse]Loading... [/pulse][/center]"
+emojis_text = NodePath("Panel/VBoxContainer/ScrollContainer/RichTextLabel")
+notify_label = NodePath("Panel/VBoxContainer/Notify")
+search_line_edit = NodePath("Panel/VBoxContainer/HBoxContainer/Search")
+size_slider = NodePath("Panel/VBoxContainer/SliderContainer/HSlider")
+size_label = NodePath("Panel/VBoxContainer/SliderContainer/LabelSize")
+scroll_container = NodePath("Panel/VBoxContainer/ScrollContainer")
+help_button = NodePath("Panel/VBoxContainer/HBoxContainer/EmojiButton")
 
-[node name="Emoji" type="VBoxContainer" parent="."]
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -8.0
-rect_min_size = Vector2( 100, 100 )
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-grid_path = NodePath("ScrollContainer/GridContainer")
-button_x = 48
 
-[node name="Filter" type="LineEdit" parent="Emoji"]
-margin_right = 432.0
-margin_bottom = 24.0
-placeholder_text = "Filter"
-placeholder_alpha = 0.3
-caret_blink = true
-caret_blink_speed = 0.5
-script = ExtResource( 1 )
-grid_node_path = NodePath("../ScrollContainer/GridContainer")
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="HSeparator2" type="HSeparator" parent="Emoji"]
-margin_top = 28.0
-margin_right = 432.0
-margin_bottom = 32.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NotificationLabel" type="Label" parent="Emoji"]
+[node name="Notify" type="Label" parent="Panel/VBoxContainer"]
 visible = false
-margin_top = 36.0
-margin_right = 272.0
-margin_bottom = 50.0
-custom_colors/font_color = Color( 0.231373, 0.952941, 0.227451, 1 )
-text = "Copied Emoji message here"
-align = 1
-valign = 1
-clip_text = true
-max_lines_visible = 2
-script = ExtResource( 2 )
+layout_mode = 2
+text = "Emoji-x was copied to clipboard."
 
-[node name="Timer" type="Timer" parent="Emoji/NotificationLabel"]
-one_shot = true
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Emoji"]
-margin_top = 36.0
-margin_right = 432.0
-margin_bottom = 488.0
+[node name="Search" type="LineEdit" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="EmojiButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Open Online Help"
+theme_override_fonts/font = ExtResource("2_66r43")
+text = "❓"
+script = ExtResource("3_ytnla")
+emoji_name = "red_question_mark"
+
+[node name="SliderContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/SliderContainer"]
+layout_mode = 2
+text = "Size preview"
+
+[node name="HSlider" type="HSlider" parent="Panel/VBoxContainer/SliderContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 16.0
+max_value = 128.0
+value = 32.0
+
+[node name="LabelSize" type="Label" parent="Panel/VBoxContainer/SliderContainer"]
+layout_mode = 2
+text = "32"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GridContainer" parent="Emoji/ScrollContainer" instance=ExtResource( 4 )]
-margin_right = 412.0
-margin_bottom = 4918.0
-columns = 8
-
-[connection signal="about_to_show" from="." to="Emoji" method="_on_about_to_show"]
-[connection signal="resized" from="." to="Emoji" method="_on_resized"]
-[connection signal="emoji_selected" from="Emoji" to="Emoji/NotificationLabel" method="_on_emoji_selected"]
-[connection signal="text_changed" from="Emoji/Filter" to="Emoji/Filter" method="_on_text_changed"]
-[connection signal="timeout" from="Emoji/NotificationLabel/Timer" to="Emoji/NotificationLabel" method="_on_timeout"]
+tooltip_text = "click on emoji to copy its name to clipboard"
+theme_override_colors/table_border = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("2_66r43")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "[center] [pulse]Loading... [/pulse][/center]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+meta_underlined = false
+threaded = true
+progress_bar_delay = 0

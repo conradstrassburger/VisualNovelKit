@@ -1,88 +1,81 @@
-# ![Logo](WindowIcon.png) Rakugo Visual Novel Kit
+# ![Logo](WindowIcon.png) Rakugo Game Template
+
 ![MIT License](https://img.shields.io/static/v1.svg?label=📜%20License&message=MIT&color=informational)
 [![Join the Discord channel](https://img.shields.io/static/v1.svg?label=Join%20our%20Discord%20channel&message=🎆&color=7289DA&logo=discord&logoColor=white&labelColor=2C2F33)](https://discord.gg/K9gvjdg)
-[![GitHub](https://img.shields.io/github/stars/rakugoteam/VisualNovelKit)](https://github.com/rakugoteam/VisualNovelKit)
-[![GitHub](https://img.shields.io/github/issues/rakugoteam/VisualNovelKit)](https://github.com/rakugoteam/VisualNovelKit)
-[![GitHub](https://img.shields.io/github/issues-closed/rakugoteam/VisualNovelKit)](https://github.com/rakugoteam/VisualNovelKit)
 
-Inspired by [Ren'Py](https://www.renpy.org), Rakugo-VNKit is a [Godot](https://godotengine.org)'s project aiming to provide a way to make visual novel games easily. 
-
-Support this project here [itch.io](https://rakugoteam.github.io/donations/).
-
-[Showcase](#Showcase) -
-[Installation](#Installation) -
-[Used Addons](#Used-Addons) -
-[FAQ](#faq)
-[Infos](#Infos)
-
----
+Inspired by the [GGT](https://github.com/crystal-bit/godot-game-template/tree/main) of [Crystal-bit](https://github.com/crystal-bit) and the [GGT](https://github.com/Maaack/Godot-Game-Template) of [Maaack](https://github.com/Maaack/Godot-Game-Template). This [Godot](https://godotengine.org)'s project aiming to provide a way to make games easily.
 
 ## Feature
-* Save/Load system
-* Funcs, Objects and Vars like in Ren'Py
-* Dialog system
-* Ability to Rollback
-* History
-* Skipping
-* Documentation: https://rakugodocs.readthedocs.io
+* **Main Menu** with Play, Options, Credits and Exit buttons
+* **Options Menu** to set audio, resolutions, and inputs
+* **Loading Screen** between each loads
+* **Transitions** between each scenes
+* **Game Template Scene** with a Pause Menu and a End Menu (Win/Loose)
+* **Pause Menu** with Resume, Restart, Options, Main Menu, and Exit Buttons
+* **End Menu** with Restart, Main Menu and Exit Buttons
+* **Scene Loader** use it to load and change scene easily
+* **UI Sounds Manager** handle the UI sounds in one place
 
-## Showcase
+![Screenshot](Screenshot.png)
 
-- [**Space drive beats**](https://plopsis.itch.io/space-drive-beats)
-- [**Bot Saves Dream**](https://plopsis.itch.io/curator-bot)
-
-If your game uses Rakugo, tell us on [Discord](https://discord.gg/K9gvjdg).
+[Installation](#installation) -
+[What do you need to now](#what-do-you-need-to-know) -
+[Info](#infos)
+---
 
 ## Installation
 
-### If you want use it for your own project
+### If you want to create a new project with it
 
-1. Download the last [release](https://github.com/rakugoteam/VisualNovelKit/releases/latest)
+1. Download the last [release]()
 1. Unzip the archive
-1. Open is as [Godot](https://godotengine.org) project
+1. Import the project from the [Godot](https://godotengine.org) Project Manager
 
-### If you want contribute to the project
+### If you have already a project
 
-1. Fork the repository and clone the fork
-1. Open it as [Godot](https://godotengine.org) project
-1. Make your changes and commit them to the repostory
-1. Make a pull request to this repository
+1. Download the last [release]()
+1. Unzip the archive
+1. Copy the addons/RakugoGameTemplate folder in your project folder
+1. In the scenes folder, copy what you are interested in
+1. Enable the plugin in the Project Settings (Plugins tab)
+1. Reload the project
+1. Eventualy set some values in the ProjectSettings (see bellow)
 
-## Used Addons
+## What do you need to know
 
-- Rakugo Dialogue System
-- AdvancedText
-- Emojis-For-Godot
-- Material Icons for Godot
-- Plug-Gd
+### Project Settings
 
-## FAQ
+In your Project Settings, enable "Advanced Settings". In Application/Addons/RakugoGameTemplate you can set some values.
 
-**Q:** So it's about adding a refined writing and dialogue system to the engine? </p>
-**A:** Yes, and more - nodes, objects and funcs to make easy to provide mechanics like in point&click and rpgs.
+* **Loading Scene Path** is the path to the Loading Scene of your project. It is used by the SceneLoader when you change scene
+* **Main Menu Path** is the path to the Main Menu scene of your project. It is used when you return to the Main Menu from the Pause Menu
+* **First Game Scene Path** is the path to the First Game Scene of your project. It is used when you click on the play button in the Main Menu
 
-**Q:** As a scenarist, what would I gain from using Rakugo over Ren'Py or Twine ? </p>
-**A:** It is made as godot addon - you can use all godot features.
-You can make your game 2d, 2.5d or 3d - you can only 2d in Ren'Py.
-You can easy add minigames or mix it with other game genre.
-It will have mechanics for point&click games and rpgs - Ren'Py and Twine are only for vn.
-This project's dialog functions can do more than Ren'Py equivalents.
+### Autoloads
 
-**Q:** How does the project interact with the engine ? </p>
-**A:** For now this project is a singleton and a collection of special nodes. There is also gui include in example project that is connected with the project and has all functions like in a Ren'Py game.
+When you enabled the plugin it will add some autoloads
 
-**Q:** Is it easy to use ?</p>
-**A:** For now it is not that easy as I want it to be, but I am working to make it use RakuScript (this project's own language) and visual script.
+* **SceneLoader** you can use it to load scene with the method *change_scene*(path_tscn:String, wait_after_load:bool = true). It will pause the tree, make a transition to the Loading Scene, before the end of the transition the tree is unpaused, then it load the wanted scene, after wait or not an action from the player, pause the tree again, a last transition to the desired scene and at the end after the transition is finished, unpause the tree.
 
+```gd
+const level_12 = "res://scenes/levels/level_12.tscn"
+...
+SceneLoader.change_scene(level_12)
+```
+
+* **Transitions** you can use it to make a transition with the method *transition*(transition_type, reverse:bool). transition_type are {Swipe,Square,Circle,Diamond,Line}. Transitions always works instead the tree is paused. It will not pause the tree for you, you should handle it.
+
+```gd
+get_tree().paused = true
+Transitions.transition(Transitions.transition_type.Square)
+await Transitions.animation_player.finished
+get_tree().pause = false
+```
+
+* **UISoundManager** you do not need to call him, it will do the work for you. The only thing to do is to open "res://addons/rakugo_game_template/Autoloads/UISoundManager/UISoundManager.tscn" and parametrize the values of the main node *UISoundManager*. *Audio Bus* is the name of the audio bus the AudioStreamPlayer will use to play the "bip bip boup" of your UI. The next both values are Array. They will be use to take sound inside them randomly except if you add only just one. The first Array is for *pressed* sounds and the second *hovered* ones.
 
 ## Infos
 
-If you want to help please write to us on our [Discord](https://discord.gg/K9gvjdg).
+If you want to help please write to us on our [Discord](https://discord.gg/K9gvjdg)
 
-- Rakugo Team website: https://rakugoteam.github.io/
-
-- Docs repo here: https://github.com/rakugoteam/Docs
-
-- [Godot icons](https://github.com/godotengine/godot-design/tree/master/engine/icons/optimized)
-
-- icons from [game-icons.net](https://game-icons.net) and [godot engine](https://github.com/godotengine/godot/tree/master/editor/icons)
+Rakugo Team website: https://rakugoteam.github.io/
