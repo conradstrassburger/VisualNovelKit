@@ -1,0 +1,2 @@
+answer = ? "Are you human ?" "Yes"
+answer =? "Your answer was <answer> ?" "<answer>"

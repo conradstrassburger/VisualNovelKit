@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4t73608j5s62"]
+
+[ext_resource type="Script" path="res://Test/TestUI/TestSayUI.gd" id="2_22kyt"]
+
+[node name="TestSayUI" type="Node"]
+script = ExtResource("2_22kyt")
