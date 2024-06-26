@@ -19,7 +19,7 @@ const regex := {
 	AtPercent:
 		"^at% +({NUMERIC}) +({NUMERIC})$",
 	AtOne:
-		"^at ([xyz]) *=? *({NUMERIC})$",
+		"^at ([xyz]) *([-+\\*\\/])?=? *({NUMERIC})$",
 }
 
 func _ready():
