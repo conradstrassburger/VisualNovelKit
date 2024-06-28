@@ -13,9 +13,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NotifyPanel" parent="." instance=ExtResource("1_r2n8v")]
-layout_mode = 0
-anchors_preset = 0
+[node name="NotifyPanel" parent="." node_paths=PackedStringArray("root") instance=ExtResource("1_r2n8v")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+offset_left = -337.0
+offset_bottom = 38.0
+grow_horizontal = 0
+root = NodePath("..")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -30,11 +36,14 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AskPopup" parent="VBoxContainer/CenterContainer" instance=ExtResource("2_i2ljs")]
+[node name="AskPopup" parent="VBoxContainer/CenterContainer" node_paths=PackedStringArray("root") instance=ExtResource("2_i2ljs")]
 layout_mode = 2
+root = NodePath("../../..")
 
-[node name="MenuScrollContainer" parent="VBoxContainer/CenterContainer" instance=ExtResource("3_le5op")]
+[node name="MenuScrollContainer" parent="VBoxContainer/CenterContainer" node_paths=PackedStringArray("root") instance=ExtResource("3_le5op")]
 layout_mode = 2
+root = NodePath("../../..")
 
-[node name="SayPanel" parent="VBoxContainer" instance=ExtResource("4_2fi1k")]
+[node name="SayPanel" parent="VBoxContainer" node_paths=PackedStringArray("root") instance=ExtResource("4_2fi1k")]
 layout_mode = 2
+root = NodePath("../..")

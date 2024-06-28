@@ -21,9 +21,6 @@ func _ready():
 	set_process(false)
 
 func set_labels(character:Dictionary, text:String):
-	if !visible:
-		show()
-	
 	var character_name = character.get("name", "")
 
 	if not character_name:
@@ -43,6 +40,8 @@ func set_labels(character:Dictionary, text:String):
 		character_name_label._text = name_label
 	
 	dialogue_label._text = text
+	
+	if !visible: show()
 
 func _on_visibility_changed():
 	set_process(visible)

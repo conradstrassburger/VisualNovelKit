@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://addons/visualnovelkit/extra_text_fx/ghost_tfx.gd" id="4_4bi71"]
 [ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextButton.gd" id="5_77jxi"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wo4m8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3x1kx"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -27,7 +27,7 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_36w1l"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e5188"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -46,9 +46,9 @@ script = ExtResource("4_4bi71")
 self_modulate = Color(1, 1, 1, 0.5)
 custom_minimum_size = Vector2(1280, 180)
 script = ExtResource("1_sqegj")
-character_name_label = NodePath("")
-dialogue_label = NodePath("")
-root = NodePath("")
+character_name_label = NodePath("VBoxContainer/HBoxContainer/CharacterNameLabel")
+dialogue_label = NodePath("VBoxContainer/HBoxContainer2/DialogueLabel")
+root = NodePath(".")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -95,8 +95,8 @@ layout_mode = 2
 
 [node name="NextBtn" type="RichTextLabel" parent="VBoxContainer/HBoxContainer2/CenterContainer"]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxFlat_wo4m8")
-theme_override_styles/normal = SubResource("StyleBoxFlat_36w1l")
+theme_override_styles/focus = SubResource("StyleBoxFlat_3x1kx")
+theme_override_styles/normal = SubResource("StyleBoxFlat_e5188")
 bbcode_enabled = true
 text = "[ghost freq=1.0 span=3.0]Next [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰊍[/font][/ghost]"
 fit_content = true

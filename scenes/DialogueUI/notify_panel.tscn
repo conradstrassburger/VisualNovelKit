@@ -14,9 +14,9 @@ offset_left = -0.360046
 offset_bottom = -0.0400009
 grow_horizontal = 2
 script = ExtResource("1_vufgk")
-notification_label = NodePath("")
-timer = NodePath("")
-root = NodePath("")
+notification_label = NodePath("DialogueLabel")
+timer = NodePath("Timer")
+root = NodePath(".")
 
 [node name="DialogueLabel" type="RichTextLabel" parent="."]
 layout_mode = 1
