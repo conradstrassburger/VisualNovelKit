@@ -42,10 +42,11 @@ corner_detail = 5
 [sub_resource type="RichTextEffect" id="RichTextEffect_njj8q"]
 script = ExtResource("4_4bi71")
 
-[node name="SayPanel" type="Panel" node_paths=PackedStringArray("character_name_label", "dialogue_label", "root")]
+[node name="SayPanel" type="Panel" node_paths=PackedStringArray("next_btn", "character_name_label", "dialogue_label", "root")]
 self_modulate = Color(1, 1, 1, 0.5)
 custom_minimum_size = Vector2(1280, 180)
 script = ExtResource("1_sqegj")
+next_btn = NodePath("VBoxContainer/HBoxContainer2/CenterContainer/NextBtn")
 character_name_label = NodePath("VBoxContainer/HBoxContainer/CharacterNameLabel")
 dialogue_label = NodePath("VBoxContainer/HBoxContainer2/DialogueLabel")
 root = NodePath(".")

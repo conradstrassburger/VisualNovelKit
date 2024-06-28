@@ -10,13 +10,12 @@ func test_say_ui():
 	assert_dialogue_panel(say_panel)
 	watch_rakugo_signals()
 	await wait_parse_and_execute_script(file_path)
-	# var sender = InputSender.new(say_panel)
 	await wait_say({}, "Hello, world !")
 	assert_dialogue_panel_text(say_panel, "", "Hello, world !")
 	# assert_visblity(say_panel)
 
 	assert_do_step()
-	# sender.action_down("ui_accept")
+	# say_panel.next_btn.pressed.emit()
 	# assert_visblity(say_panel, false)
 	
 	await wait_say({"name": "Sylvie"}, "Hello !")
@@ -24,7 +23,7 @@ func test_say_ui():
 	# assert_visblity(say_panel)
 	
 	assert_do_step()
-	# sender.action_down("ui_accept")
+	# say_panel.next_btn.pressed.emit()
 	# assert_visblity(say_panel, false)
 
 	await wait_say({}, "My name is Sylvie")
@@ -32,7 +31,7 @@ func test_say_ui():
 	# assert_visblity(say_panel)
 
 	assert_do_step()
-	# sender.action_down("ui_accept")
+	# say_panel.next_btn.pressed.emit()
 	# assert_visblity(say_panel, false)
 
 	await wait_say({}, "I am 18")
@@ -40,7 +39,7 @@ func test_say_ui():
 	# assert_visblity(say_panel)
 	
 	assert_do_step()
-	# sender.action_pr("ui_accept")
+	# say_panel.next_btn.pressed.emit()
 	# assert_visblity(say_panel, false)
 
 	await wait_execute_script_finished(file_base_name)
