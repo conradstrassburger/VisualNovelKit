@@ -3,14 +3,12 @@
 [ext_resource type="Script" path="res://scenes/DialogueUI/ProcentContainer.gd" id="1_rupor"]
 [ext_resource type="Script" path="res://scenes/DialogueUI/MenuBox.gd" id="2_x42km"]
 
-[node name="MenuScrollContainer" type="ScrollContainer" node_paths=PackedStringArray("root")]
+[node name="MenuScrollContainer" type="ScrollContainer"]
 custom_minimum_size = Vector2(576, 504)
 script = ExtResource("1_rupor")
-root = NodePath("")
 
-[node name="MenuBox" type="VBoxContainer" parent="." node_paths=PackedStringArray("parent")]
+[node name="MenuBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("2_x42km")
-parent = NodePath("")

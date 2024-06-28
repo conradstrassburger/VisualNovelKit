@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://addons/visualnovelkit/extra_text_fx/ghost_tfx.gd" id="4_4bi71"]
 [ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextButton.gd" id="5_77jxi"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lku22"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b30wb"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -27,7 +27,7 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35uk6"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_duhs6"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -96,8 +96,8 @@ layout_mode = 2
 
 [node name="NextBtn" type="RichTextLabel" parent="VBoxContainer/HBoxContainer2/CenterContainer"]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxFlat_lku22")
-theme_override_styles/normal = SubResource("StyleBoxFlat_35uk6")
+theme_override_styles/focus = SubResource("StyleBoxFlat_b30wb")
+theme_override_styles/normal = SubResource("StyleBoxFlat_duhs6")
 bbcode_enabled = true
 text = "[ghost freq=1.0 span=3.0]Next [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰊍[/font][/ghost]"
 fit_content = true

@@ -4,6 +4,9 @@ extends VBoxContainer
 
 var markup : TextParser
 
+signal menu_ready
+signal menu_clean
+
 func _ready():
 	if Engine.is_editor_hint():
 		return
@@ -20,10 +23,7 @@ func _on_visibility_changed():
 	parent.visible = visible
 
 func _on_menu(choices:Array):
-	for ch in get_children():
-		ch.queue_free()
-
-	for id in range(choices.size()):
+	for id in choices.size():
 		var choice_btn := AdvancedTextButton.new()
 		add_child(choice_btn)
 		choice_btn.fit_content = true
@@ -32,9 +32,13 @@ func _on_menu(choices:Array):
 		choice_btn.parser = markup
 		choice_btn._text = choices[id]
 		choice_btn.pressed.connect(_on_choice.bind(id))
-
+	
+	menu_ready.emit()
 	show()
 
 func _on_choice(id: int):
 	Rakugo.menu_return(id)
 	hide()
+	for ch in get_children():
+		ch.queue_free()
+	menu_clean.emit()
