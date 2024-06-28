@@ -13,7 +13,7 @@ func assert_anwser_placeholder(line_edit:LineEdit, placeholder:String):
 	assert_eq(line_edit.placeholder_text, placeholder)
 
 func test_ask():
-	var ask_panel := add_panel_from_scene(ask_panel_scene)
+	var ask_panel := add_from_scene(ask_panel_scene) as DialoguePanel
 	assert_dialogue_panel(ask_panel)
 	watch_rakugo_signals()
 	await wait_parse_and_execute_script(file_path)
@@ -21,15 +21,15 @@ func test_ask():
 	await wait_ask({"name": "Test"}, "Are you human ?", "Yes")
 	assert_dialogue_panel_text(ask_panel, "# Test\n", "Are you human ?")
 	assert_anwser_placeholder(ask_panel.line_edit, "Yes")
-	assert_visblity(ask_panel) # passed
+	wait_visblity(ask_panel)
 	assert_anwser_ui(ask_panel.line_edit, "No")
-	# assert_visblity(ask_panel, false) # crashes
 
 	await wait_ask({},"Your answer was No ?", "No")
 	assert_dialogue_panel_text(ask_panel, "", "Your answer was No ?")
 	assert_anwser_placeholder(ask_panel.line_edit, "No")
-	# assert_visblity(ask_panel)
+	wait_visblity(ask_panel)
+
 	assert_anwser_ui(ask_panel.line_edit, "Yes")
-	# assert_visblity(ask_panel, false)
+	wait_visblity(ask_panel, false)
 	
 	await wait_execute_script_finished(file_base_name) 

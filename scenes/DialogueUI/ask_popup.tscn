@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://6ioam3qiqsqa" path="res://addons/visualnovelkit/default_markups/def_markdown.tres" id="3_d6bk4"]
 [ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextButton.gd" id="4_y8alx"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lku22"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b30wb"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -26,7 +26,7 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35uk6"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_duhs6"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -90,8 +90,8 @@ layout_mode = 2
 [node name="DefaultAnswerBtn" type="RichTextLabel" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/focus = SubResource("StyleBoxFlat_lku22")
-theme_override_styles/normal = SubResource("StyleBoxFlat_35uk6")
+theme_override_styles/focus = SubResource("StyleBoxFlat_b30wb")
+theme_override_styles/normal = SubResource("StyleBoxFlat_duhs6")
 bbcode_enabled = true
 text = "[center] Default answer [font=res://addons/material-design-icons/fonts/material_design_icons.ttf][/font] [/center]"
 fit_content = true
@@ -104,8 +104,8 @@ parser = ExtResource("3_d6bk4")
 [node name="OkBtn" type="RichTextLabel" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/focus = SubResource("StyleBoxFlat_lku22")
-theme_override_styles/normal = SubResource("StyleBoxFlat_35uk6")
+theme_override_styles/focus = SubResource("StyleBoxFlat_b30wb")
+theme_override_styles/normal = SubResource("StyleBoxFlat_duhs6")
 bbcode_enabled = true
 text = "[center] Ok [font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰄳[/font] [/center]"
 fit_content = true
