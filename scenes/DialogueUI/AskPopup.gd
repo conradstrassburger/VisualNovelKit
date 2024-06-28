@@ -18,10 +18,6 @@ func _process(_delta):
 	if Engine.is_editor_hint():
 		return
 
-	if not Rakugo.is_waiting_ask_return():
-		hide()
-		return
-
 	if Input.is_action_just_pressed("ui_accept"):
 		_on_ok_btn_pressed()
 
@@ -34,4 +30,8 @@ func _on_ok_btn_pressed():
 		Rakugo.ask_return(line_edit.text)
 	else:
 		Rakugo.ask_return(line_edit.placeholder_text)
+	hide()
+
+func _on_text_submitted(new_text):
+	Rakugo.ask_return(new_text)
 	hide()
