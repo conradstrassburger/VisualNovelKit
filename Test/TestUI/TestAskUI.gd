@@ -1,4 +1,4 @@
-extends GUITest
+extends KitTest
 
 const ask_panel_scene = "res://scenes/DialogueUI/ask_popup.tscn"
 const file_path = "res://Test/TestUI/TestAsk.rk"

@@ -1,4 +1,4 @@
-extends GUITest
+extends KitTest
 
 const menu_box_scene = "res://scenes/DialogueUI/menu_container.tscn"
 const file_path = "res://Test/TestUI/TestMenu.rk"

@@ -1,4 +1,4 @@
-extends GUITest
+extends KitTest
 
 const say_panel_scene = "res://scenes/DialogueUI/say_panel.tscn"
 const file_path = "res://Test/TestUI/TestSay.rk"
