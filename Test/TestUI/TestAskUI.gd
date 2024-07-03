@@ -10,9 +10,9 @@ func assert_anwser_ui(line_edit: LineEdit, anwser:String):
 	line_edit.text_submitted.emit(anwser)
 
 func assert_anwser_placeholder(line_edit:LineEdit, placeholder:String):
-	assert_eq(line_edit.placeholder_text, placeholder)
+	assert_adv_text(line_edit.placeholde, placeholder)
 
-func test_ask():
+func test_ask_ui():
 	var ask_panel := add_from_scene(ask_panel_scene) as DialoguePanel
 	assert_dialogue_panel(ask_panel)
 	watch_rakugo_signals()

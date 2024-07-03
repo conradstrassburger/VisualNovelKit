@@ -16,7 +16,7 @@ func assert_menu_ui_return(menu_box:Node, choice_id:int):
 	assert_not_null(choice)
 	choice.pressed.emit()
 
-func test_menu():
+func test_menu_ui():
 	var menu_container = add_from_scene(menu_box_scene)
 	assert_not_null(menu_container)
 	var menu_box = menu_container.get_node("MenuBox")
