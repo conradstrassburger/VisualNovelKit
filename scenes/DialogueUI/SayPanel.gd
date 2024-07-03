@@ -1,6 +1,8 @@
 @tool
 extends DialoguePanel
 
+@export var next_btn: AdvancedTextButton
+
 func _ready():
 	if Engine.is_editor_hint():
 		return
@@ -13,10 +15,6 @@ func _on_say(character:Dictionary, text:String):
 
 func _process(_delta):
 	if Engine.is_editor_hint():
-		return
-
-	if not Rakugo.is_waiting_step():
-		hide()
 		return
 	
 	if Input.is_action_just_pressed("ui_accept"):
