@@ -1,6 +1,19 @@
 extends RakugoTest
 class_name KitTest
 
+var last_statement : String
+
+func watch_custom_statments():
+	Rakugo.sg_custom_regex.connect(_on_custom_regex)
+
+func _on_custom_regex(key:String, _result:RegExMatch):
+	last_statement = key
+
+func wait_for_custom_statement(statement_id:String, max_wait: float):
+	await wait_for_signal(Rakugo.sg_custom_regex, max_wait)
+	assert_eq(last_statement, statement_id)
+	last_statement = ""
+
 func add_from_scene(path:String) -> Node:
 	var scene = load(path)
 	var node = scene.instantiate()
@@ -8,12 +21,17 @@ func add_from_scene(path:String) -> Node:
 	return node
 
 func assert_dialogue_panel(dialogue_panel: DialoguePanel):
-	for node in [dialogue_panel, dialogue_panel.character_name_label, dialogue_panel.dialogue_label]:
+	var nodes := [
+		dialogue_panel,
+		dialogue_panel.character_name_label,
+		dialogue_panel.dialogue_label
+	]
+	for node in nodes:
 		assert_not_null(node)
 
 func assert_dialogue_panel_text(dialogue_panel: DialoguePanel, character_name, dialogue_text):
-	assert_eq(dialogue_panel.character_name_label._text, character_name)
-	assert_eq(dialogue_panel.dialogue_label._text, dialogue_text)
+	assert_adv_text(dialogue_panel.character_name_label, character_name)
+	assert_adv_text(dialogue_panel.dialogue_label, dialogue_text)
 
 func wait_visblity(control: Control, visibility := true):
 	await wait_for_signal(control.visibility_changed, 0.2)
@@ -22,7 +40,6 @@ func wait_visblity(control: Control, visibility := true):
 	else:
 		assert_false(control.visible, control.name + " visibility")
 
-func wait_for_custom_statement(statement_id: String):
-	await wait_for_signal(Rakugo.sg_custom_regex, 0.2)
-	var params = get_signal_parameters(Rakugo, Rakugo.sg_custom_regex.get_name())
-	assert_eq(params[0], statement_id)
+func assert_adv_text(adv_text: AdvancedTextLabel, text:String):
+	assert_eq(adv_text._text, text)
+
