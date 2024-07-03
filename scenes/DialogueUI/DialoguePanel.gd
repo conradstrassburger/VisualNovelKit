@@ -21,8 +21,7 @@ func _ready():
 	set_process(false)
 
 func set_labels(character:Dictionary, text:String):
-	if !visible:
-		show()
+	show()
 	
 	var character_name = character.get("name", "")
 
