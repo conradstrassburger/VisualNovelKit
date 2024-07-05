@@ -20,8 +20,7 @@ func test_notif_ui():
 	
 	await wait_parse_and_execute_script(file_path)
 
-	await wait_say({}, "start")
-	assert_do_step()
+	wait_step("start")
 
 	assert_false(notif_panel.visible)
 	await wait_for_custom_statement("notification", 0.2)
@@ -31,8 +30,7 @@ func test_notif_ui():
 	assert_true(notif_panel.visible)
 	await wait_for_signal(notif_panel.timer.timeout, 0.5)
 
-	await wait_say({}, "step")
-	assert_do_step()
+	wait_step()
 
 	assert_false(notif_panel.visible)
 	await wait_for_custom_statement("notification", 0.2)
@@ -43,6 +41,5 @@ func test_notif_ui():
 	await wait_for_signal(notif_panel.timer.timeout, 0.3)
 	await wait_visblity(notif_panel, false)
 	
-	await wait_say({}, "end")
-	assert_do_step()
+	wait_step("end")
 	await wait_execute_script_finished(file_base_name)
