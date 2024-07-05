@@ -8,6 +8,7 @@ const Hide := "hide"
 const AtPrecise = "at precise"
 const AtPercent = "at percent"
 const AtOne = "at one"
+const AtPredef = "at predef"
 
 const regex := {
 	Show:
@@ -19,8 +20,28 @@ const regex := {
 	AtPercent:
 		"^at% +({NUMERIC}) +({NUMERIC})$",
 	AtOne:
-		"^at ([xyz]) *([-+\\*\\/])?=? *({NUMERIC})$",
+		"^at +([xyz]) *([-+\\*\\/])?=? *({NUMERIC})$",
+	AtPredef:
+		"^at +(\\w+)$",
 }
+
+@onready
+var at_predefs := {
+	# center
+	"center" : VisualNovelKit.at_center,
+	"left" : Vector2(VisualNovelKit.at_left, VisualNovelKit.at_center.y),
+	"right" :  Vector2(VisualNovelKit.at_right, VisualNovelKit.at_center.y),
+
+	# top
+	"top" : Vector2(VisualNovelKit.at_center.x, VisualNovelKit.at_top),
+	"top_left" : Vector2(VisualNovelKit.at_left, VisualNovelKit.at_top),
+	"top_right" : Vector2(VisualNovelKit.at_right, VisualNovelKit.at_top),
+	
+	# bottom
+	"bottom_center" : Vector2(VisualNovelKit.at_center.x, VisualNovelKit.at_bottom),
+	"bottom_left" : Vector2(VisualNovelKit.at_left, VisualNovelKit.at_bottom),
+	"bottom_right" : Vector2(VisualNovelKit.at_right, VisualNovelKit.at_bottom),
+} 
 
 func _ready():
 	for key in regex:
@@ -104,6 +125,12 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			var procent := Vector2()
 			procent.x = float(result.get_string(1))/100
 			procent.y = float(result.get_string(2))/100
+			var vp_size := get_viewport().get_visible_rect().size
+			last_node.position = procent * vp_size
+		
+		AtPredef:
+			var predef := result.get_string(1)
+			var procent : Vector2 = at_predefs[predef]
 			var vp_size := get_viewport().get_visible_rect().size
 			last_node.position = procent * vp_size
 
