@@ -4,7 +4,8 @@ class_name KitTest
 var last_statement : String
 
 func watch_custom_statments():
-	Rakugo.sg_custom_regex.connect(_on_custom_regex)
+	if !Rakugo.sg_custom_regex.is_connected(_on_custom_regex):
+		Rakugo.sg_custom_regex.connect(_on_custom_regex)
 
 func _on_custom_regex(key:String, _result:RegExMatch):
 	last_statement = key
@@ -16,8 +17,15 @@ func wait_for_custom_statement(statement_id:String, max_wait: float):
 
 func add_from_scene(path:String) -> Node:
 	var scene = load(path)
-	var node = scene.instantiate()
-	get_tree().current_scene.add_child(node)
+	return add_node(scene.instantiate())
+
+func add_node(node: Node, parent : Node = null, node_name:= "") -> Node:
+	if !parent:
+		parent = get_tree().current_scene
+	parent.add_child(node)
+	assert_not_null(node)
+	if node_name:
+		node.name = node_name
 	return node
 
 func assert_dialogue_panel(dialogue_panel: DialoguePanel):
@@ -33,12 +41,16 @@ func assert_dialogue_panel_text(dialogue_panel: DialoguePanel, character_name, d
 	assert_adv_text(dialogue_panel.character_name_label, character_name)
 	assert_adv_text(dialogue_panel.dialogue_label, dialogue_text)
 
-func wait_visblity(control: Control, visibility := true):
-	await wait_for_signal(control.visibility_changed, 0.2)
+func wait_visblity(visible_node: Node, visibility := true):
+	await wait_for_signal(visible_node.visibility_changed, 0.2)
 	if visibility:
-		assert_true(control.visible, control.name + " visibility")
+		assert_true(visible_node.visible, visible_node.name + " visibility")
 	else:
-		assert_false(control.visible, control.name + " visibility")
+		assert_false(visible_node.visible, visible_node.name + " visibility")
+
+func wait_step(say_text:="step"):
+	await wait_say({}, say_text)
+	assert_do_step()
 
 func assert_adv_text(adv_text: AdvancedTextLabel, text:String):
 	assert_eq(adv_text._text, text)
