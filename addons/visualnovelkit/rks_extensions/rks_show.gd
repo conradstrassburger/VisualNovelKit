@@ -59,7 +59,7 @@ func _on_custom_regex(key:String, result:RegExMatch):
 				return
 			
 			var nodes := rk_get_nodes(result.get_string(1))
-			last_node = nodes[0]
+			last_node = nodes.back()
 
 			for node in nodes:
 				for ch in node.get_children():
