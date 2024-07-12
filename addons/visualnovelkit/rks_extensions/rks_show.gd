@@ -112,14 +112,11 @@ func _on_custom_regex(key:String, result:RegExMatch):
 				return
 			
 			var axis := result.get_string(1)
-			var value := float(result.get_string(2))
-			match axis:
-				"x":
-					last_node.position.x = value
-				"y":
-					last_node.position.y = value
-				"z":
-					last_node.position.z = value
+			var operator := result.get_string(2)
+			var value := float(result.get_string(3))
+			last_node.position = at_one(
+				last_node.position, operator, axis, value
+			)
 			
 		AtPercent:
 			var procent := Vector2()
