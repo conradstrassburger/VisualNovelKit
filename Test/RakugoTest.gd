@@ -1,6 +1,8 @@
 extends GutTest
 class_name RakugoTest
 
+var line_num := 1
+
 func get_file_base_name(file_path:String) -> String:
 	return file_path.get_file().get_basename()
 
@@ -8,15 +10,19 @@ func watch_rakugo_signals():
 	watch_signals(Rakugo)
 
 func wait_signal(sg:Signal, parameters:Array):
-	await wait_for_signal(sg, 0.2)
+	await wait_for_signal(
+		sg, 0.2, "\n-- '%s' at line: %d --" % [
+			str(sg), line_num
+		]
+	)
+	line_num += 1
 
 	assert_signal_emitted_with_parameters(
-		Rakugo,
-		sg.get_name(),
-		parameters)
+		Rakugo, sg.get_name(), parameters)
 
 func wait_execute_script_start(file_base_name:String):
 	await wait_signal(Rakugo.sg_execute_script_start, [file_base_name])
+	line_num = 0
 
 func wait_parse_and_execute_script(file_path:String):
 	Rakugo.parse_and_execute_script(file_path)
@@ -35,6 +41,7 @@ func assert_ask_return(var_name:String, value):
 
 func wait_execute_script_finished(file_base_name:String, error_str:String = ""):
 	await wait_signal(Rakugo.sg_execute_script_finished, [file_base_name, error_str])
+	line_num = 0
 
 func assert_character_name_eq(char_tag:String, value:String):
 	var character = Rakugo.get_character(char_tag)
@@ -42,8 +49,10 @@ func assert_character_name_eq(char_tag:String, value:String):
 	assert_eq(character.get("name"), value)
 
 func assert_do_step():
-	assert_true(Rakugo.is_waiting_step())
-	
+	assert_true(
+		Rakugo.is_waiting_step(),
+		"\n-- do step at line: %d --" % line_num
+	)
 	Rakugo.do_step()
 
 func wait_say(character:Dictionary, text:String):

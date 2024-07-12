@@ -131,7 +131,27 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			var vp_size := get_viewport().get_visible_rect().size
 			last_node.position = procent * vp_size
 
+func at_one_calc(axis:float, operator:String, value:float) -> float:
+	match operator:
+		"-":
+			return axis - value
+		"+":
+			return axis + value
+		"*":
+			return axis * value
+		"/":
+			return axis / value
+		_:
+			return value
 
-
-
+func at_one(vector, operator: String, axis:String, value:float):
+	match axis:
+		"x":
+			vector.x = at_one_calc(vector.x, operator, value)
+		"y":
+			vector.y = at_one_calc(vector.y, operator, value)
+		"z":
+			vector.z = at_one_calc(vector.z, operator, value)
+	
+	return vector
 
