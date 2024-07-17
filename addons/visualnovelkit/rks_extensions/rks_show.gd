@@ -1,5 +1,7 @@
 extends RKSExtension
 
+var vnk = VisualNovelKit
+
 func _group_name() -> StringName:
 	return Show
 
@@ -28,19 +30,19 @@ const regex := {
 @onready
 var at_predefs := {
 	# center
-	"center" : VisualNovelKit.at_center,
-	"left" : Vector2(VisualNovelKit.at_left, VisualNovelKit.at_center.y),
-	"right" :  Vector2(VisualNovelKit.at_right, VisualNovelKit.at_center.y),
+	"center" : vnk.at_center,
+	"left" : Vector2(vnk.at_left, vnk.at_center.y),
+	"right" :  Vector2(vnk.at_right, vnk.at_center.y),
 
 	# top
-	"top" : Vector2(VisualNovelKit.at_center.x, VisualNovelKit.at_top),
-	"top_left" : Vector2(VisualNovelKit.at_left, VisualNovelKit.at_top),
-	"top_right" : Vector2(VisualNovelKit.at_right, VisualNovelKit.at_top),
+	"top" : Vector2(vnk.at_center.x, vnk.at_top),
+	"top_left" : Vector2(vnk.at_left, vnk.at_top),
+	"top_right" : Vector2(vnk.at_right, vnk.at_top),
 	
 	# bottom
-	"bottom_center" : Vector2(VisualNovelKit.at_center.x, VisualNovelKit.at_bottom),
-	"bottom_left" : Vector2(VisualNovelKit.at_left, VisualNovelKit.at_bottom),
-	"bottom_right" : Vector2(VisualNovelKit.at_right, VisualNovelKit.at_bottom),
+	"bottom" : Vector2(vnk.at_center.x, vnk.at_bottom),
+	"bottom_left" : Vector2(vnk.at_left, vnk.at_bottom),
+	"bottom_right" : Vector2(vnk.at_right, vnk.at_bottom),
 } 
 
 func _ready():
@@ -59,7 +61,7 @@ func _on_custom_regex(key:String, result:RegExMatch):
 				return
 			
 			var nodes := rk_get_nodes(result.get_string(1))
-			last_node = nodes.back()
+			last_node = nodes[0]
 
 			for node in nodes:
 				for ch in node.get_children():
