@@ -11,9 +11,14 @@ func _on_custom_regex(key:String, _result:RegExMatch):
 	last_statement = key
 
 func wait_for_custom_statement(statement_id:String, max_wait: float):
-	await wait_for_signal(Rakugo.sg_custom_regex, max_wait)
+	await wait_for_signal(
+		Rakugo.sg_custom_regex, max_wait,
+		"\n-- '%s' at line: %d --" % [
+			statement_id, line_num]
+	)
 	assert_eq(last_statement, statement_id)
 	last_statement = ""
+	line_num += 1
 
 func add_from_scene(path:String) -> Node:
 	var scene = load(path)
