@@ -26,7 +26,7 @@ func make_test(constructor : Callable):
 	nodes = [parent, childA]
 	for n in nodes:
 		n.hide()
-		assert_eq(n.position, Vector2(0, 0))
+		assert_eq(n.position, Vector2.ZERO)
 
 	watch_rakugo_signals()
 	watch_custom_statments()
@@ -40,7 +40,7 @@ func make_test(constructor : Callable):
 	var vp_size := get_viewport().get_visible_rect().size
 	await wait_for_custom_statement("at percent", 0.2)
 	assert_eq(
-		parent.position, Vector2(0.5, 0.5) * vp_size,
+		parent.position, Vector2.ONE * 0.5 * vp_size,
 		"\n-- 'at% 50 50' %d --" % line_num
 	)
 	await wait_step()
@@ -98,18 +98,18 @@ func make_test(constructor : Callable):
 
 	await wait_for_custom_statement("at percent", 0.2)
 	assert_not_same(
-		childA.position, Vector2(0.25, 0.25) * vp_size,
+		childA.position, Vector2.ONE * 0.25 * vp_size,
 		"\n-- 'at% 25 25' at %d --" % line_num
 	)
 	assert_eq(
-		parent.position, Vector2(0.25, 0.25) * vp_size,
+		parent.position, Vector2.ONE * 0.25 * vp_size,
 		"\n-- 'at% 25 25' at %d --" % line_num
 	)
 	await wait_step()
 
 	await wait_for_custom_statement("at precise", 0.2)
 	assert_eq(
-		parent.position, Vector2(0, 0),
+		parent.position, Vector2.ZERO,
 		"\n-- 'at 0 0' at %d --" % line_num
 	)
 	await wait_step()
