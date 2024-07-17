@@ -7,7 +7,7 @@ var nodes: Array[Node]
 var at_predefs := RKSShow.at_predefs
 
 func wait_test_show(xnodes: Array[Node]):
-	await wait_for_custom_statement("show", 0.2)
+	await wait_for_custom_statement(RKSShow.Show, 0.2)
 	for node: Node in xnodes:
 		assert_true(node.visible)
 
@@ -38,21 +38,21 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	var vp_size := get_viewport().get_visible_rect().size
-	await wait_for_custom_statement("at percent", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPrecise, 0.2)
 	assert_eq(
 		parent.position, Vector2.ONE * 0.5 * vp_size,
 		"\n-- 'at% 50 50' %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at precise", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPrecise, 0.2)
 	assert_eq(
-		parent.position, Vector2(148, 156),
+		parent.position, Vector2(148, -156),
 		"\n-- 'at 148 156' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.y, 200.0,
 		"\n-- 'at y 200' at %d --" % line_num
@@ -60,7 +60,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	var prev_x = parent.position.x
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.x, prev_x + 50.0,
 		"\n-- 'at x + 50' at %d --" % line_num
@@ -69,7 +69,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	prev_x = parent.position.x
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.x, prev_x - 25.0,
 		"\n-- 'at x -25' at %d --" % line_num
@@ -77,7 +77,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	prev_x = parent.position.x
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.x, prev_x / 2.0,
 		"\n-- 'at x /2' at %d --" % line_num
@@ -85,7 +85,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	prev_x = parent.position.x
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.x, prev_x * 3.0,
 		"\n-- 'at x *3' at %d --" % line_num
@@ -96,7 +96,7 @@ func make_test(constructor : Callable):
 	assert_true(childA.visible)
 	await wait_step()
 
-	await wait_for_custom_statement("at percent", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPercent, 0.2)
 	assert_not_same(
 		childA.position, Vector2.ONE * 0.25 * vp_size,
 		"\n-- 'at% 25 25' at %d --" % line_num
@@ -107,77 +107,77 @@ func make_test(constructor : Callable):
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at precise", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPrecise, 0.2)
 	assert_eq(
 		parent.position, Vector2.ZERO,
 		"\n-- 'at 0 0' at %d --" % line_num
 	)
 	await wait_step()
 	
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["center"] * vp_size,
 		"\n-- 'at center' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["left"] * vp_size,
 		"\n-- 'at left' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["right"] * vp_size,
 		"\n-- 'at right' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["top"] * vp_size,
 		"\n-- 'at top' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["top_left"] * vp_size,
 		"\n-- 'at top_left' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["top_right"] * vp_size,
 		"\n-- 'at top_right' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["bottom"] * vp_size,
 		"\n-- 'at bottom' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["bottom_left"] * vp_size,
 		"\n-- 'at bottom_left' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at predef", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPredef, 0.2)
 	assert_eq(
 		parent.position, at_predefs["bottom_right"] * vp_size,
 		"\n-- 'at bottom_right' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("hide", 0.2)
+	await wait_for_custom_statement(RKSShow.Hide, 0.2)
 	assert_false(parent.visible)
 	await wait_step("end")
 

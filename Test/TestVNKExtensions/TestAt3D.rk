@@ -1,7 +1,7 @@
 	"start"
 	show Parent ChildA
 	"step"
-	at 148 156 265
+	at 148 -156 265
 	"step"
 	at y 200
 	"step"
