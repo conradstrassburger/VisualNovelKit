@@ -3,9 +3,9 @@
 	"step"
 	scale 0.2 -0.4
 	"step"
-	scale = 2
+	scale xy = 2
 	"step"
-	scale -= 2
+	scale x = -2
 	"step"
 	scale x += 0.5
 	"step"
