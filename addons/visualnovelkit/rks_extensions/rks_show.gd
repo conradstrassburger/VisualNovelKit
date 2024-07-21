@@ -30,7 +30,7 @@ const regex := {
 	ScalePrecise:
 		"^scale +({NUMERIC}) +({NUMERIC})( +({NUMERIC}))?$",
 	ScaleAxis:
-		"^scale +([xyz]{0,3}) *([-+\\*\\/])?= *({NUMERIC})$",
+		"^scale +([xyz]{1,3}) *([-+\\*\\/])?= *({NUMERIC})$",
 
 }
 
