@@ -5,7 +5,7 @@ var file_base_name = get_file_base_name(file_path)
 var nodes: Array[Node]
 
 func wait_test_show(xnodes: Array[Node]):
-	await wait_for_custom_statement("show", 0.2)
+	await wait_for_custom_statement(RKSShow.Show, 0.2)
 	for node: Node in xnodes:
 		assert_true(node.visible)
 
@@ -55,11 +55,11 @@ func make_test(constructor : Callable):
 	assert_false(childAB.visible)
 	await wait_step()
 	
-	await wait_for_custom_statement("hide", 0.2)
+	await wait_for_custom_statement(RKSShow.Hide, 0.2)
 	assert_false(childAC.visible)
 	await wait_step()
 	
-	await wait_for_custom_statement("hide", 0.2)
+	await wait_for_custom_statement(RKSShow.Hide, 0.2)
 	assert_false(parent.visible)
 	await wait_step("end")
 

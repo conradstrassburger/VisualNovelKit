@@ -7,7 +7,7 @@ var nodes: Array[Node]
 var at_predefs := RKSShow.at_predefs
 
 func wait_test_show(xnodes: Array[Node]):
-	await wait_for_custom_statement("show", 0.2)
+	await wait_for_custom_statement(RKSShow.Show, 0.2)
 	for node: Node in xnodes:
 		assert_true(node.visible)
 
@@ -34,14 +34,14 @@ func make_test(constructor : Callable):
 	await wait_test_show([parent, childA])
 	await wait_step()
 
-	await wait_for_custom_statement("at precise", 0.2)
+	await wait_for_custom_statement(RKSShow.AtPrecise, 0.2)
 	assert_eq(
-		parent.position, Vector3(148, 156, 265),
-		"\n-- 'at 148 156 265' at %d --" % line_num
+		parent.position, Vector3(148, -156, 265),
+		"\n-- 'at 148 -156 265' at %d --" % line_num
 	)
 	await wait_step()
 
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.y, 200.0,
 		"\n-- 'at y 200' at %d --" % line_num
@@ -49,7 +49,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	var prev_x = parent.position.x
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.x, prev_x + 50.0,
 		"\n-- 'at x + 50' at %d --" % line_num
@@ -58,7 +58,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	var prev_z = parent.position.z
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.z, prev_z - 25.0,
 		"\n-- 'at z -25' at %d --" % line_num
@@ -66,7 +66,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	prev_x = parent.position.x
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.x, prev_x / 2.0,
 		"\n-- 'at x /2' at %d --" % line_num
@@ -74,7 +74,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	prev_x = parent.position.x
-	await wait_for_custom_statement("at one", 0.2)
+	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.x, prev_x * 3.0,
 		"\n-- 'at x *3' at %d --" % line_num
