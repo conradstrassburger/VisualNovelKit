@@ -11,6 +11,7 @@ const AtPrecise = "at precise"
 const AtPercent = "at percent"
 const AtAxis = "at axis"
 const AtPredef = "at predef"
+const ScaleAll = "scale all"
 const ScalePrecise = "scale precise"
 const ScaleAxis = "scale axis"
 const Rotate2D = "rotate 2D"
@@ -26,11 +27,13 @@ const regex := {
 	AtPercent:
 		"^at% +({NUMERIC}) +({NUMERIC})$",
 	AtAxis:
-		"^at +([xyz]{1,3}) *([-+\\*\\/])?=? *({NUMERIC})$",
+		"^at +([xyz]{1,3}) *([-+\\*\\/])?= *({NUMERIC})$",
 	AtPredef:
 		"^at +(\\w+)$",
 	ScalePrecise:
 		"^scale +({NUMERIC}) +({NUMERIC})( +({NUMERIC}))?$",
+	ScaleAll:
+		"^scale +({NUMERIC})$",
 	ScaleAxis:
 		"^scale +([xyz]{1,3}) *([-+\\*\\/])?= *({NUMERIC})$",
 	Rotate2D:
@@ -152,7 +155,28 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			var procent : Vector2 = at_predefs[predef]
 			var vp_size := get_viewport().get_visible_rect().size
 			last_node.position = procent * vp_size
-		
+
+		ScaleAll:
+			if !last_node:
+				push_error(err_mess_04 % ["scale", Show])
+				return
+			
+			if result.get_group_count() == 0:
+				# add error for to small numer of args ?
+				push_error("error: " + result.get_string(0))
+				return
+			
+			var scale := float(result.get_string(1))
+
+			if last_node.scale is Vector2:
+				last_node.scale = Vector2.ONE * scale
+				return
+
+			if last_node.scale is Vector3:
+				last_node.scale = Vector3.ONE * scale
+			
+			return
+
 		ScalePrecise:
 			if !last_node:
 				push_error(err_mess_04 % ["scale", Show])
