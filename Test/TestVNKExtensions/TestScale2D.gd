@@ -44,14 +44,13 @@ func make_test(constructor : Callable):
 	)
 	await wait_step()
 
-	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
+	await wait_for_custom_statement(RKSShow.ScaleAll, 0.2)
 	assert_eq(
 		parent.scale, Vector2.ONE * 2,
-		"\n-- 'scale xy = 2' at %d --" % line_num
+		"\n-- 'scale 2' at %d --" % line_num
 	)
 	await wait_step()
 
-	var prev_scale = parent.scale
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
 	assert_eq(
 		parent.scale.x, -2,
@@ -59,7 +58,7 @@ func make_test(constructor : Callable):
 	)
 	await wait_step()
 
-	var prev_x = parent.scale.x
+	var prev_x : float = parent.scale.x
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
 	assert_almost_eq(
 		parent.scale.x, prev_x + 0.5, 0.01,
@@ -67,7 +66,7 @@ func make_test(constructor : Callable):
 	)
 	await wait_step()
 
-	var prev_y = parent.scale.y
+	var prev_y : float = parent.scale.y
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
 	assert_almost_eq(
 		parent.scale.y, prev_y - 2.5, 0.01,

@@ -3,7 +3,7 @@
 	"step"
 	scale 0.2 -0.4 0.6
 	"step"
-	scale xyz = 2
+	scale 2
 	"step"
 	scale xy = -2
 	"step"
