@@ -13,6 +13,8 @@ const AtAxis = "at axis"
 const AtPredef = "at predef"
 const ScalePrecise = "scale precise"
 const ScaleAxis = "scale axis"
+const Rotate2D = "rotate 2D"
+const Rotate3D = "rotate 3D"
 
 const regex := {
 	Show:
@@ -31,7 +33,10 @@ const regex := {
 		"^scale +({NUMERIC}) +({NUMERIC})( +({NUMERIC}))?$",
 	ScaleAxis:
 		"^scale +([xyz]{1,3}) *([-+\\*\\/])?= *({NUMERIC})$",
-
+	Rotate2D:
+		"^rotate +({NUMERIC})$",
+	Rotate3D:
+		"^rotate +({NUMERIC}) +(\\w+)$",
 }
 
 @onready
@@ -39,7 +44,7 @@ var at_predefs := {
 	# center
 	"center" : vnk.at_center,
 	"left" : Vector2(vnk.at_left, vnk.at_center.y),
-	"right" :  Vector2(vnk.at_right, vnk.at_center.y),
+	"right" : Vector2(vnk.at_right, vnk.at_center.y),
 
 	# top
 	"top" : Vector2(vnk.at_center.x, vnk.at_top),
@@ -78,7 +83,7 @@ func _on_custom_regex(key:String, result:RegExMatch):
 					node.name, group_name, Show
 				]
 				try_call_method(node, Show, err)
-
+		
 		Hide:
 			if result.get_group_count() == 0:
 				push_error(err_mess_01 % [Hide, group_name])
@@ -185,7 +190,33 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			last_node.scale = calc_axis(
 				last_node.scale, operator, axis, value
 			)
+		
+		Rotate2D:
+			if !last_node:
+				push_error(err_mess_04 % ["rotate", Show])
+				return
+			
+			if result.get_group_count() == 0:
+				# add error for to small numer of args ?
+				return
+			
+			var angle := result.get_string(1)
+			last_node.rotation_degrees = float(angle)
+	
+		Rotate3D:
+			if !last_node:
+				push_error(err_mess_04 % ["rotate", Show])
+				return
+			
+			if result.get_group_count() == 0:
+				# add error for to small numer of args ?
+				return
+			
+			var angle := result.get_string(1)
+			var axis_str := result.get_string(2)
 
+			var axis := str_to_axis(axis_str)
+			last_node.rotation = last_node.rotation.rotated(axis, float(angle))
 
 func calc_axis(vector, operator: String, axis:String, value:float):
 	match axis:
@@ -232,4 +263,15 @@ func _axis(axis:float, operator:String, value:float) -> float:
 		_:
 			return value
 
+func str_to_axis(axis_str:String) -> Vector3:
+	match axis_str:
+		"up": return Vector3.UP
+		"down": return Vector3.DOWN
+		"forward": return Vector3.FORWARD
+		"back": return Vector3.BACK
+		"left": return Vector3.LEFT
+		"right": return Vector3.RIGHT
+		
+	push_error("rotate around %s axis_str isn't supported" % axis_str)
+	return Vector3.ZERO
 
