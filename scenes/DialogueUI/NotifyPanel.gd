@@ -26,7 +26,7 @@ func _ready():
 func _on_custom_regex(key:String, result:RegExMatch):
 	match key:
 		"notification":
-			var text : = result.get_string(3)
+			var text := result.get_string(3)
 			text = Rakugo.parser.treat_string(text)
 			notification_label._text = text
 			var time := default_notification_time
