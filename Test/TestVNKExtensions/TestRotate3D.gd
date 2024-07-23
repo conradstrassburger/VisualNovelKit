@@ -1,6 +1,6 @@
 extends KitTest
 
-const file_path = "res://Test/TestVNKExtensions/TestRotate2D.rk"
+const file_path = "res://Test/TestVNKExtensions/TestRotate3D.rk"
 var file_base_name = get_file_base_name(file_path)
 var nodes: Array[Node]
 
@@ -9,11 +9,16 @@ func wait_test_show(xnodes: Array[Node]):
 	for node: Node in xnodes:
 		assert_true(node.visible)
 
-func test_node2d():
-	await make_test(Node2D.new)
+func test_node3d():
+	await make_test(Node3D.new)
 
-func test_control():
-	await make_test(Control.new)
+func assert_3D_rotation(node:Node, angle:float, axis_str:String):
+	await wait_for_custom_statement(RKSShow.Rotate3D, 0.2)
+	var axis := RKSShow.str_to_axis(axis_str)
+	assert_eq(
+		node.rotation_degrees, node.rotation.rotated(axis, angle),
+		"\n-- 'rotate %d %s' at %d --" % [angle, axis, line_num]
+	)
 
 func make_test(constructor : Callable):
 	var parent := add_node(constructor.call(), null, "Parent")
@@ -24,7 +29,7 @@ func make_test(constructor : Callable):
 	nodes = [parent, childA]
 	for n in nodes:
 		n.hide()
-		assert_eq(n.rotation_degrees, 0.0)
+		assert_eq(n.rotation_degrees, Vector3.ZERO)
 
 	watch_rakugo_signals()
 	watch_custom_statments()
@@ -34,18 +39,19 @@ func make_test(constructor : Callable):
 
 	await wait_test_show([parent, childA])
 	await wait_step()
-	
-	await wait_for_custom_statement(RKSShow.Rotate2D, 0.2)
-	assert_eq(
-		parent.rotation_degrees, 45.0,
-		"\n-- 'rotate 45' at %d --" % line_num
-	)
-	assert_eq(
-		childA.rotation_degrees, 0.0,
-		"\n-- 'rotate 45' at %d --" % line_num
-	)
+	await assert_3D_rotation(parent, 45, "up")
 	await wait_step()
-
+	await assert_3D_rotation(parent, 45, "down")
+	await wait_step()
+	await assert_3D_rotation(parent, 45, "forward")
+	await wait_step()
+	await assert_3D_rotation(parent, 45, "back")
+	await wait_step()
+	await assert_3D_rotation(parent, 45, "left")
+	await wait_step()
+	await assert_3D_rotation(parent, 45, "right")
+	await wait_step()
+	
 	await wait_for_custom_statement(RKSShow.Hide, 0.2)
 	assert_false(parent.visible)
 	await wait_step("end")
