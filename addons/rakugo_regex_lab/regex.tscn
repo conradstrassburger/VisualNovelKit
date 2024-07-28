@@ -14,6 +14,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 1
@@ -31,20 +33,28 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Help" type="Label" parent="Panel/MarginContainer/Box"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/Box"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/Box/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Help" type="Label" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_constants/outline_size = 2
 text = "Rakugo Regular expressions (RegEx) can be used for to add your own exstensions to RakuScript programming language."
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
-[node name="RkRegexBox" type="HBoxContainer" parent="Panel/MarginContainer/Box"]
+[node name="RkRegexBox" type="HBoxContainer" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label2" type="Label" parent="Panel/MarginContainer/Box/RkRegexBox"]
+[node name="Label2" type="Label" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/RkRegexBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
@@ -54,19 +64,19 @@ text = "Rakugo
 RegEx"
 horizontal_alignment = 1
 
-[node name="Expression" type="LineEdit" parent="Panel/MarginContainer/Box/RkRegexBox"]
+[node name="Expression" type="LineEdit" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/RkRegexBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "\"((?:\\\\.|[^\"])*)\""
 placeholder_text = "Rakugo Regular expression to match against"
 
-[node name="RegexBox" type="HBoxContainer" parent="Panel/MarginContainer/Box"]
+[node name="RegexBox" type="HBoxContainer" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label2" type="Label" parent="Panel/MarginContainer/Box/RegexBox"]
+[node name="Label2" type="Label" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/RegexBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
@@ -75,18 +85,18 @@ theme_override_constants/outline_size = 2
 text = "RegEx"
 horizontal_alignment = 1
 
-[node name="RegExpression" type="LineEdit" parent="Panel/MarginContainer/Box/RegexBox"]
+[node name="RegExpression" type="LineEdit" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/RegexBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "\"((?:\\\\.|[^\"])*)\""
 placeholder_text = "Regular expression to match against"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/Box"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/Box/HBoxContainer2"]
+[node name="Label" type="Label" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
@@ -95,13 +105,22 @@ theme_override_constants/outline_size = 2
 text = "Text"
 horizontal_alignment = 1
 
-[node name="Text" type="TextEdit" parent="Panel/MarginContainer/Box/HBoxContainer2"]
+[node name="Text" type="TextEdit" parent="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "They asked me \"What's going on \\\"in the manor\\\"?\""
 placeholder_text = "Text to search in"
+
+[node name="MiniHelp" type="RichTextLabel" parent="Panel/MarginContainer/Box/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "{ \"NAME\": \"[a-zA-Z][a-zA-Z_0-9]*\", \"NUMERIC\": \"-?[0-9]\\\\.?[0-9]*\", \"STRING\": \"\\\".+?\\\"\", \"VARIABLE\": \"((?<char_tag>{NAME})\\\\.)?(?<var_name>{NAME})\", \"ASSIGNMENT\": \"(?<assignment>=|\\\\+=|\\\\-=|\\\\*=|\\\\/=)\" }"
+fit_content = true
+scroll_following = true
 
 [node name="Label" type="Label" parent="Panel/MarginContainer/Box"]
 layout_mode = 2
@@ -118,6 +137,6 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 
-[connection signal="text_changed" from="Panel/MarginContainer/Box/RkRegexBox/Expression" to="." method="_on_rkreg_expression_text_changed"]
-[connection signal="text_changed" from="Panel/MarginContainer/Box/RegexBox/RegExpression" to="." method="update_expression"]
-[connection signal="text_changed" from="Panel/MarginContainer/Box/HBoxContainer2/Text" to="." method="update_text"]
+[connection signal="text_changed" from="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/RkRegexBox/Expression" to="." method="_on_rkreg_expression_text_changed"]
+[connection signal="text_changed" from="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/RegexBox/RegExpression" to="." method="update_expression"]
+[connection signal="text_changed" from="Panel/MarginContainer/Box/HBoxContainer/VBoxContainer/HBoxContainer2/Text" to="." method="update_text"]

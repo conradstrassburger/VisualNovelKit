@@ -12,7 +12,11 @@ var RkRegex := {
 var regex = RegEx.new()
 
 func _ready():
-	%Text.set_text("They asked me \"What's going on \\\"in the manor\\\"?\"")
+	%Text.text = "They asked me \"What's going on \\\"in the manor\\\"?\""
+	%MiniHelp.text = "[b]Rakugo Reg Help[/b]]:\n"
+	%MiniHelp.text += JSON.stringify(RkRegex, "\n")
+
+
 	update_expression(%Expression.text)
 	close_requested.connect(hide)
 
