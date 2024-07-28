@@ -58,7 +58,7 @@ var at_predefs := {
 	"bottom" : Vector2(vnk.at_center.x, vnk.at_bottom),
 	"bottom_left" : Vector2(vnk.at_left, vnk.at_bottom),
 	"bottom_right" : Vector2(vnk.at_right, vnk.at_bottom),
-} 
+}
 
 func _ready():
 	for key in regex:
@@ -89,7 +89,7 @@ func _on_custom_regex(key:String, result:RegExMatch):
 		
 		Hide:
 			if result.get_group_count() == 0:
-				push_error(err_mess_01 % [Hide, group_name])
+				push_error(err_mess_01 % ["hide", group_name])
 				return
 
 			var nodes := rk_get_nodes(result.get_string(1))
