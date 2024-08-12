@@ -21,10 +21,11 @@ func _ready():
 	super._ready()
 
 func _on_custom_regex(key: String, result: RegExMatch):
+	if key not in regex: return
 	if result.get_group_count() == 0:
 		push_error(err_mess_01 % [key, group_name])
 		return
-		
+	
 	match key:
 		PlayAnim:
 			var node := rk_get_node(result.get_string(1))

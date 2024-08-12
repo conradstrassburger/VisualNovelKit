@@ -67,6 +67,7 @@ func _ready():
 	super._ready()
 
 func _on_custom_regex(key: String, result: RegExMatch):
+	if key not in regex: return
 	var err_key := key
 	if " " in err_key: err_key = err_key.split(" ", false)[0]
 	
