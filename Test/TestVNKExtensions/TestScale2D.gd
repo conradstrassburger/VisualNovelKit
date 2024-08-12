@@ -53,7 +53,7 @@ func make_test(constructor : Callable):
 
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
 	assert_eq(
-		parent.scale.x, -2,
+		parent.scale.x, -2.0,
 		"\n-- 'scale x =- 2' at %d --" % line_num
 	)
 	await wait_step()

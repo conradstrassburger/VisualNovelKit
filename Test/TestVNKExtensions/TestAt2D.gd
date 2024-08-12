@@ -17,7 +17,7 @@ func test_node2d():
 func test_control():
 	await make_test(Control.new)
 
-func make_test(constructor : Callable):
+func make_test(constructor: Callable):
 	var parent := add_node(constructor.call(), null, "Parent")
 	parent.add_to_group("show")
 
@@ -38,7 +38,7 @@ func make_test(constructor : Callable):
 	await wait_step()
 
 	var vp_size := get_viewport().get_visible_rect().size
-	await wait_for_custom_statement(RKSShow.AtPrecise, 0.2)
+	await wait_for_custom_statement(RKSShow.AtPercent, 0.2)
 	assert_eq(
 		parent.position, Vector2.ONE * 0.5 * vp_size,
 		"\n-- 'at% 50 50' %d --" % line_num
@@ -55,7 +55,7 @@ func make_test(constructor : Callable):
 	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.y, 200.0,
-		"\n-- 'at y 200' at %d --" % line_num
+		"\n-- 'at y = 200' at %d --" % line_num
 	)
 	await wait_step()
 
@@ -186,4 +186,3 @@ func make_test(constructor : Callable):
 	if !nodes.is_empty():
 		for n in nodes:
 			n.queue_free()
-

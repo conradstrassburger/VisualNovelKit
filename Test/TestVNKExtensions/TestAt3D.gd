@@ -14,7 +14,7 @@ func wait_test_show(xnodes: Array[Node]):
 func test_node3d():
 	await make_test(Node3D.new)
 
-func make_test(constructor : Callable):
+func make_test(constructor: Callable):
 	var parent := add_node(constructor.call(), null, "Parent")
 	parent.add_to_group("show")
 
@@ -44,7 +44,7 @@ func make_test(constructor : Callable):
 	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.y, 200.0,
-		"\n-- 'at y 200' at %d --" % line_num
+		"\n-- 'at y = 200' at %d --" % line_num
 	)
 	await wait_step()
 
@@ -90,4 +90,3 @@ func make_test(constructor : Callable):
 	if !nodes.is_empty():
 		for n in nodes:
 			n.queue_free()
-
