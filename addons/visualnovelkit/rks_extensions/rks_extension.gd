@@ -6,7 +6,7 @@ const err_mess_02 := "no node called %s is in %s group"
 const err_mess_03 := "node %s in %s group dosen't have method %s"
 const err_mess_04 := "statment %s must be after %s statement"
 
-var group_name : StringName:
+var group_name: StringName:
 	get: return _group_name()
 
 func _group_name() -> StringName:
@@ -29,11 +29,10 @@ func rk_get_nodes(rk_node_path: String) -> Array[Node]:
 		push_error(err_mess_02 % [root_node_name, group_name])
 		return []
 	
-	if path_elements.is_empty():
-		return [root_node]
+	if path_elements.is_empty(): return [root_node]
 	
 	var node := root_node
-	var nodes : Array[Node] = [root_node]
+	var nodes: Array[Node] = [root_node]
 	for element in path_elements:
 		var n := node.get_node(element)
 		nodes.append(n)
@@ -43,18 +42,18 @@ func rk_get_nodes(rk_node_path: String) -> Array[Node]:
 
 func rk_get_node(rk_node_name: String) -> Node:
 	for node in get_tree().get_nodes_in_group(group_name):
-		if node.name == rk_node_name:
-			return node
+		if node.name == rk_node_name: return node
 	
+	push_error(err_mess_02 % [rk_node_name, group_name])
 	return null
 
 
-func try_call_method(node:Node, method:String, err_mess := "") -> void:
+func try_call_method(node: Node, method: String, err_mess := "") -> void:
 	if node.has_method(method):
 		node.call(method)
 	
 	elif err_mess:
 		push_error(err_mess)
 
-func _on_custom_regex(key:String, result:RegExMatch):
+func _on_custom_regex(key: String, result: RegExMatch):
 	pass

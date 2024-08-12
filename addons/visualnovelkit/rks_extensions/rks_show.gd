@@ -82,6 +82,7 @@ func _on_custom_regex(key: String, result: RegExMatch):
 	match key:
 		Show:
 			var nodes := rk_get_nodes(result.get_string(1))
+			if !nodes: return
 			last_node = nodes[0]
 
 			for node in nodes:
@@ -95,6 +96,8 @@ func _on_custom_regex(key: String, result: RegExMatch):
 		
 		Hide:
 			var nodes := rk_get_nodes(result.get_string(1))
+			if !nodes: return
+			
 			for node in nodes:
 				var err := err_mess_03 % [
 					node.name, group_name, Hide
