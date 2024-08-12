@@ -2,9 +2,6 @@ extends RKSExtension
 
 var vnk = VisualNovelKit
 
-func _group_name() -> StringName:
-	return Show
-
 const Show := "show"
 const Hide := "hide"
 const AtPrecise = "at precise"
@@ -45,36 +42,44 @@ const regex := {
 @onready
 var at_predefs := {
 	# center
-	"center" : vnk.at_center,
-	"left" : Vector2(vnk.at_left, vnk.at_center.y),
-	"right" : Vector2(vnk.at_right, vnk.at_center.y),
+	"center": vnk.at_center,
+	"left": Vector2(vnk.at_left, vnk.at_center.y),
+	"right": Vector2(vnk.at_right, vnk.at_center.y),
 
 	# top
-	"top" : Vector2(vnk.at_center.x, vnk.at_top),
-	"top_left" : Vector2(vnk.at_left, vnk.at_top),
-	"top_right" : Vector2(vnk.at_right, vnk.at_top),
+	"top": Vector2(vnk.at_center.x, vnk.at_top),
+	"top_left": Vector2(vnk.at_left, vnk.at_top),
+	"top_right": Vector2(vnk.at_right, vnk.at_top),
 	
 	# bottom
-	"bottom" : Vector2(vnk.at_center.x, vnk.at_bottom),
-	"bottom_left" : Vector2(vnk.at_left, vnk.at_bottom),
-	"bottom_right" : Vector2(vnk.at_right, vnk.at_bottom),
+	"bottom": Vector2(vnk.at_center.x, vnk.at_bottom),
+	"bottom_left": Vector2(vnk.at_left, vnk.at_bottom),
+	"bottom_right": Vector2(vnk.at_right, vnk.at_bottom),
 }
 
-func _ready():
-	for key in regex:
-		Rakugo.add_custom_regex(key, regex[key])
+var last_node: Node
 
+func _group_name() -> StringName:
+	return Show
+
+func _ready():
+	for key in regex: Rakugo.add_custom_regex(key, regex[key])
 	super._ready()
 
-var last_node : Node
+func _on_custom_regex(key: String, result: RegExMatch):
+	var err_key := key
+	if " " in err_key: err_key = err_key.split(" ", false)[0]
+	
+	if result.get_group_count() == 0:
+		push_error(err_mess_01 % [err_key, group_name])
+		return
 
-func _on_custom_regex(key:String, result:RegExMatch):
+	if key not in [Show, Hide] and not last_node:
+			push_error(err_mess_04 % [err_key, Show])
+			return
+
 	match key:
 		Show:
-			if result.get_group_count() == 0:
-				push_error(err_mess_01 % [Show, group_name])
-				return
-			
 			var nodes := rk_get_nodes(result.get_string(1))
 			last_node = nodes[0]
 
@@ -88,10 +93,6 @@ func _on_custom_regex(key:String, result:RegExMatch):
 				try_call_method(node, Show, err)
 		
 		Hide:
-			if result.get_group_count() == 0:
-				push_error(err_mess_01 % ["hide", group_name])
-				return
-
 			var nodes := rk_get_nodes(result.get_string(1))
 			for node in nodes:
 				var err := err_mess_03 % [
@@ -100,15 +101,6 @@ func _on_custom_regex(key:String, result:RegExMatch):
 				try_call_method(node, Hide, err)
 		
 		AtPrecise:
-			if !last_node:
-				push_error(err_mess_04 % ["at", Show])
-				return
-			
-			if result.get_group_count() == 0:
-				# add error for to small numer of args ?
-				push_error("error: " + result.get_string(0))
-				return
-			
 			var x := float(result.get_string(1))
 			var y := float(result.get_string(2))
 
@@ -120,14 +112,6 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			last_node.position = Vector2(x, y)
 		
 		AtAxis:
-			if !last_node:
-				push_error(err_mess_04 % ["at", Show])
-				return
-			
-			if result.get_group_count() == 0:
-				# add error for to small numer of args ?
-				return
-			
 			var axis := result.get_string(1)
 			var operator := result.get_string(2)
 			var value := float(result.get_string(3))
@@ -136,36 +120,19 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			)
 		
 		AtPercent:
-			if !last_node:
-				push_error(err_mess_04 % ["at", Show])
-				return
-
 			var procent := Vector2()
-			procent.x = float(result.get_string(1))/100
-			procent.y = float(result.get_string(2))/100
+			procent.x = float(result.get_string(1)) / 100
+			procent.y = float(result.get_string(2)) / 100
 			var vp_size := get_viewport().get_visible_rect().size
 			last_node.position = procent * vp_size
 		
 		AtPredef:
-			if !last_node:
-				push_error(err_mess_04 % ["at", Show])
-				return
-			
 			var predef := result.get_string(1)
-			var procent : Vector2 = at_predefs[predef]
+			var procent: Vector2 = at_predefs[predef]
 			var vp_size := get_viewport().get_visible_rect().size
 			last_node.position = procent * vp_size
 
 		ScaleAll:
-			if !last_node:
-				push_error(err_mess_04 % ["scale", Show])
-				return
-			
-			if result.get_group_count() == 0:
-				# add error for to small numer of args ?
-				push_error("error: " + result.get_string(0))
-				return
-			
 			var scale := float(result.get_string(1))
 
 			if last_node.scale is Vector2:
@@ -178,15 +145,6 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			return
 
 		ScalePrecise:
-			if !last_node:
-				push_error(err_mess_04 % ["scale", Show])
-				return
-			
-			if result.get_group_count() == 0:
-				# add error for to small numer of args ?
-				push_error("error: " + result.get_string(0))
-				return
-			
 			var x := float(result.get_string(1))
 			var y := float(result.get_string(2))
 	
@@ -199,14 +157,6 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			return
 		
 		ScaleAxis:
-			if !last_node:
-				push_error(err_mess_04 % ["scale", Show])
-				return
-			
-			if result.get_group_count() == 0:
-				# add error for to small numer of args ?
-				return
-			
 			var axis := result.get_string(1)
 			var operator := result.get_string(2)
 			var value := float(result.get_string(3))
@@ -216,78 +166,38 @@ func _on_custom_regex(key:String, result:RegExMatch):
 			)
 		
 		Rotate2D:
-			if !last_node:
-				push_error(err_mess_04 % ["rotate", Show])
-				return
-			
-			if result.get_group_count() == 0:
-				# add error for to small numer of args ?
-				return
-			
 			var angle := result.get_string(1)
 			last_node.rotation_degrees = float(angle)
 	
 		Rotate3D:
-			if !last_node:
-				push_error(err_mess_04 % ["rotate", Show])
-				return
-			
-			if result.get_group_count() == 0:
-				# add error for to small numer of args ?
-				return
-			
 			var angle := result.get_string(1)
 			var axis_str := result.get_string(2)
 
 			var axis := str_to_axis(axis_str)
 			last_node.rotation = last_node.rotation.rotated(axis, float(angle))
 
-func calc_axis(vector, operator: String, axis:String, value:float):
-	match axis:
-		"x":
-			vector.x = _axis(vector.x, operator, value)
-			
-		"y":
-			vector.y = _axis(vector.y, operator, value)
+func calc_axis(vector, operator: String, axis: String, value: float):
+	if "x" in axis: vector.x = _axis(vector.x, operator, value)
+	if "y" in axis: vector.y = _axis(vector.y, operator, value)
+	if "z" in axis: vector.z = _axis(vector.z, operator, value)
+	if axis == "":
+		if vector is Vector2:
+			return calc_axis(vector, operator, "xy", value)
 
-		"z":
-			vector.z = _axis(vector.z, operator, value)
-
-		"xy", "yx":
-			vector.x = _axis(vector.x, operator, value)
-			vector.y = _axis(vector.y, operator, value)
-
-		"xz", "zx":
-			vector.z = _axis(vector.z, operator, value)
-			vector.x = _axis(vector.x, operator, value)
-
-		"zy", "yz":
-			vector.y = _axis(vector.y, operator, value)
-			vector.z = _axis(vector.z, operator, value)
-
-		_:
-			vector.x = _axis(vector.x, operator, value)
-			vector.y = _axis(vector.y, operator, value)
-
-			if vector is Vector3:
-				vector.z = _axis(vector.z, operator, value)
+		if vector is Vector3:
+			return calc_axis(vector, operator, "xyz", value)
 	
 	return vector
 
-func _axis(axis:float, operator:String, value:float) -> float:
+func _axis(axis: float, operator: String, value: float) -> float:
 	match operator:
-		"-":
-			return axis - value
-		"+":
-			return axis + value
-		"*":
-			return axis * value
-		"/":
-			return axis / value
-		_:
-			return value
+		"-": return axis - value
+		"+": return axis + value
+		"*": return axis * value
+		"/": return axis / value
+		_: return value
 
-func str_to_axis(axis_str:String) -> Vector3:
+func str_to_axis(axis_str: String) -> Vector3:
 	match axis_str:
 		"up": return Vector3.UP
 		"down": return Vector3.DOWN
@@ -298,4 +208,3 @@ func str_to_axis(axis_str:String) -> Vector3:
 		
 	push_error("rotate around %s axis_str isn't supported" % axis_str)
 	return Vector3.ZERO
-
