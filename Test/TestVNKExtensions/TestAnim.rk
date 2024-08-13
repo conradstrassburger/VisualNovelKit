@@ -11,6 +11,7 @@ play AnimationPlayer test -1
 "step"
 stop AnimationPlayer
 "step"
+
 play AnimatedSprite2D test
 "step"
 pause AnimatedSprite2D
@@ -23,6 +24,7 @@ play AnimatedSprite2D test -1
 "step"
 stop AnimatedSprite2D
 "step"
+
 play AnimatedSprite3D test
 "step"
 pause AnimatedSprite3D

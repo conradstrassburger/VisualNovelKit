@@ -41,7 +41,7 @@ _data = {
 [sub_resource type="SpriteFrames" id="SpriteFrames_d0w75"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 12.0,
 "texture": ExtResource("1_h3iec")
 }, {
 "duration": 1.0,
