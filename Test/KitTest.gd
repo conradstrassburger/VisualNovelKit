@@ -1,16 +1,16 @@
 extends RakugoTest
 class_name KitTest
 
-var last_statement : String
+var last_statement: String
 
 func watch_custom_statments():
 	if !Rakugo.sg_custom_regex.is_connected(_on_custom_regex):
 		Rakugo.sg_custom_regex.connect(_on_custom_regex)
 
-func _on_custom_regex(key:String, _result:RegExMatch):
+func _on_custom_regex(key: String, _result: RegExMatch):
 	last_statement = key
 
-func wait_for_custom_statement(statement_id:String, max_wait: float):
+func wait_for_custom_statement(statement_id: String, max_wait: float):
 	await wait_for_signal(
 		Rakugo.sg_custom_regex, max_wait,
 		"\n-- '%s' at line: %d --" % [
@@ -20,11 +20,11 @@ func wait_for_custom_statement(statement_id:String, max_wait: float):
 	last_statement = ""
 	line_num += 1
 
-func add_from_scene(path:String) -> Node:
+func add_from_scene(path: String) -> Node:
 	var scene = load(path)
 	return add_node(scene.instantiate())
 
-func add_node(node: Node, parent : Node = null, node_name:= "") -> Node:
+func add_node(node: Node, parent: Node = null, node_name := "") -> Node:
 	if !parent:
 		parent = get_tree().current_scene
 	parent.add_child(node)
@@ -53,10 +53,9 @@ func wait_visblity(visible_node: Node, visibility := true):
 	else:
 		assert_false(visible_node.visible, visible_node.name + " visibility")
 
-func wait_step(say_text:="step"):
+func wait_do_step(say_text := "step"):
 	await wait_say({}, say_text)
 	assert_do_step()
 
-func assert_adv_text(adv_text: AdvancedTextLabel, text:String):
+func assert_adv_text(adv_text: AdvancedTextLabel, text: String):
 	assert_eq(adv_text._text, text)
-

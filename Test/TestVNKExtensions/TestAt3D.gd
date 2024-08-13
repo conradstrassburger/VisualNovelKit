@@ -29,24 +29,24 @@ func make_test(constructor: Callable):
 	watch_custom_statments()
 	await wait_parse_and_execute_script(file_path)
 
-	await wait_step("start")
+	await wait_do_step("start")
 
 	await wait_test_show([parent, childA])
-	await wait_step()
+	await wait_do_step()
 
 	await wait_for_custom_statement(RKSShow.AtPrecise, 0.2)
 	assert_eq(
 		parent.position, Vector3(148, -156, 265),
 		"\n-- 'at 148 -156 265' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
 	assert_eq(
 		parent.position.y, 200.0,
 		"\n-- 'at y = 200' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	var prev_x = parent.position.x
 	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
@@ -55,7 +55,7 @@ func make_test(constructor: Callable):
 		"\n-- 'at x + 50' at %d --" % line_num
 	)
 
-	await wait_step()
+	await wait_do_step()
 
 	var prev_z = parent.position.z
 	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
@@ -63,7 +63,7 @@ func make_test(constructor: Callable):
 		parent.position.z, prev_z - 25.0,
 		"\n-- 'at z -25' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	prev_x = parent.position.x
 	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
@@ -71,7 +71,7 @@ func make_test(constructor: Callable):
 		parent.position.x, prev_x / 2.0,
 		"\n-- 'at x /2' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	prev_x = parent.position.x
 	await wait_for_custom_statement(RKSShow.AtAxis, 0.2)
@@ -79,11 +79,11 @@ func make_test(constructor: Callable):
 		parent.position.x, prev_x * 3.0,
 		"\n-- 'at x *3' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	await wait_for_custom_statement("hide", 0.2)
 	assert_false(parent.visible)
-	await wait_step("end")
+	await wait_do_step("end")
 
 	await wait_execute_script_finished(file_base_name)
 

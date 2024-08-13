@@ -17,7 +17,7 @@ func test_node2d():
 func test_control():
 	await make_test(Control.new)
 
-func make_test(constructor : Callable):
+func make_test(constructor: Callable):
 	var parent := add_node(constructor.call(), null, "Parent")
 	parent.add_to_group("show")
 
@@ -32,47 +32,47 @@ func make_test(constructor : Callable):
 	watch_custom_statments()
 	await wait_parse_and_execute_script(file_path)
 
-	await wait_step("start")
+	await wait_do_step("start")
 
 	await wait_test_show([parent, childA])
-	await wait_step()
+	await wait_do_step()
 
 	await wait_for_custom_statement(RKSShow.ScalePrecise, 0.2)
 	assert_eq(
 		parent.scale, Vector2(0.2, -0.4),
 		"\n-- 'scale 0.2 -0.4' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	await wait_for_custom_statement(RKSShow.ScaleAll, 0.2)
 	assert_eq(
 		parent.scale, Vector2.ONE * 2,
 		"\n-- 'scale 2' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
 	assert_eq(
 		parent.scale.x, -2.0,
 		"\n-- 'scale x =- 2' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
-	var prev_x : float = parent.scale.x
+	var prev_x: float = parent.scale.x
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
 	assert_almost_eq(
 		parent.scale.x, prev_x + 0.5, 0.01,
 		"\n-- 'scale x += 0.5' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
-	var prev_y : float = parent.scale.y
+	var prev_y: float = parent.scale.y
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
 	assert_almost_eq(
 		parent.scale.y, prev_y - 2.5, 0.01,
 		"\n-- 'scale y -= 2.5' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	prev_x = parent.scale.x
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
@@ -80,7 +80,7 @@ func make_test(constructor : Callable):
 		parent.scale.x, prev_x / 2.0, 0.01,
 		"\n-- 'scale x /= 2' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	prev_x = parent.scale.x
 	await wait_for_custom_statement(RKSShow.ScaleAxis, 0.2)
@@ -88,15 +88,14 @@ func make_test(constructor : Callable):
 		parent.scale.x, prev_x * 3.0, 0.1,
 		"\n-- 'scale x *= 3' at %d --" % line_num
 	)
-	await wait_step()
+	await wait_do_step()
 
 	await wait_for_custom_statement(RKSShow.Hide, 0.2)
 	assert_false(parent.visible)
-	await wait_step("end")
+	await wait_do_step("end")
 
 	await wait_execute_script_finished(file_base_name)
 
 	if !nodes.is_empty():
 		for n in nodes:
 			n.queue_free()
-

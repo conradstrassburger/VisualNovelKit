@@ -18,7 +18,7 @@ func test_control():
 func test_node3d():
 	await make_test(Node3D.new)
 
-func make_test(constructor : Callable):
+func make_test(constructor: Callable):
 	var parent := add_node(constructor.call(), null, "Parent")
 	parent.add_to_group("show")
 
@@ -35,37 +35,36 @@ func make_test(constructor : Callable):
 	watch_custom_statments()
 	await wait_parse_and_execute_script(file_path)
 
-	await wait_step("start")
+	await wait_do_step("start")
 
 	await wait_test_show([parent])
-	await wait_step()
+	await wait_do_step()
 
 	for node in [childA, childAA]:
 		assert_false(node.visible)
 	await wait_test_show([parent, childA, childAA])
-	await wait_step()
+	await wait_do_step()
 
 	assert_false(childAB.visible)
 	await wait_test_show([parent, childA, childAB])
 	assert_false(childAA.visible)
-	await wait_step()
+	await wait_do_step()
 
 	assert_false(childAC.visible)
 	await wait_test_show([parent, childA, childAC])
 	assert_false(childAB.visible)
-	await wait_step()
+	await wait_do_step()
 	
 	await wait_for_custom_statement(RKSShow.Hide, 0.2)
 	assert_false(childAC.visible)
-	await wait_step()
+	await wait_do_step()
 	
 	await wait_for_custom_statement(RKSShow.Hide, 0.2)
 	assert_false(parent.visible)
-	await wait_step("end")
+	await wait_do_step("end")
 
 	await wait_execute_script_finished(file_base_name)
 
 	if !nodes.is_empty():
 		for n in nodes:
 			n.queue_free()
-
