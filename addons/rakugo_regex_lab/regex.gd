@@ -1,6 +1,7 @@
 @tool
 extends Window
 
+var regex = RegEx.new()
 var RkRegex := {
 	NAME = "[a-zA-Z][a-zA-Z_0-9]*",
 	NUMERIC = "-?[0-9]\\.?[0-9]*",
@@ -9,12 +10,32 @@ var RkRegex := {
 	ASSIGNMENT = "(?<assignment>=|\\+=|\\-=|\\*=|\\/=)",
 }
 
-var regex = RegEx.new()
+@onready
+var RkModeUI := [
+	%RkModeLabel,
+	%RkRegexBox,
+	%RkHelp,
+]
 
 func _ready():
-	%Text.set_text("They asked me \"What's going on \\\"in the manor\\\"?\"")
+	%Text.text = "They asked me \"What's going on \\\"in the manor\\\"?\""
+	%RkHelp.text = "[b]Rakugo Reg Help[/b]:\n"
+	for help in RkRegex:
+		%RkHelp.text += "[b]%s[/b]: %s\n" % [
+			help, RkRegex[help]]
+
 	update_expression(%Expression.text)
 	close_requested.connect(hide)
+	%RkModeButton.toggled.connect(_on_rk_mode_toggled)
+	%RkCopyBtn.pressed.connect(_on_copy.bind(%Expression))
+	%RegexCopyBtn.pressed.connect(_on_copy.bind(%RegExpression))
+
+func _on_copy(line_edit: LineEdit):
+	DisplayServer.clipboard_set(line_edit.text)
+
+func _on_rk_mode_toggled(value: bool):
+	for ui in RkModeUI:
+		ui.visible = value
 
 func update_expression(text):
 	regex.compile(text)
@@ -60,4 +81,3 @@ func _on_rkreg_expression_text_changed(new_text):
 	%RegExpression.text = new_text
 	regex.compile(new_text)
 	update_text()
-

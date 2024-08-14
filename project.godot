@@ -44,6 +44,7 @@ EmojisDB="*res://addons/emojis-for-godot/emojis/emojis.gd"
 MaterialIconsDB="*res://addons/material-design-icons/icons/icons.gd"
 AdvancedText="*res://addons/advanced-text/AdvancedText.gd"
 RKSShow="*res://addons/visualnovelkit/rks_extensions/rks_show.gd"
+RKSAnim="*res://addons/visualnovelkit/rks_extensions/rks_anim.gd"
 
 [display]
 
